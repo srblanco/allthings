@@ -1,0 +1,76 @@
+<hr class="lt" />
+<div id="setup_bar">
+    <div class="label cell i18n setup_label" data-i18n_key="GUI_CFG_SETUP_SETUP_LABEL">Setup</div>
+    <div id="setup_button_account" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_ACCOUNT">Account</div>
+    <div id="setup_button_camera" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_CAMERA">Camera</div>
+    <div id="setup_button_network" class="setup_button setup_button_selected" data-i18n_key="GUI_CFG_SETUP_BC_NETWORK">Network</div>
+</div>
+<hr class="lt" />
+<img id="setup_pointer" src="img/setup_pointer.gif"/>
+<div id="setup_page_label" class="label cell i18n" data-i18n_key="GUI_CFG_SETUP_NETWORK_LABEL">Choose your connection type:</div>
+<div id="setup_container">
+    <div id="setup_left">
+        <div id="button_eth" class="setup_action dn">Ethernet</div>
+        <hr class="lt" />
+        Or
+        <hr class="lt" />
+        <div id="button_wifi" class="setup_action dn">WiFi</div>
+    </div>
+    <div class="fr">
+        <div id="walkthru_video"></div>
+        <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_VIDWALK_LABEL">Video walkthrough</div>
+        <div class="f1" id="walkthru_toggle">
+            <div class="iphone_switch_container">
+                <img class="iphone_switch" src="img/iphone_switch_container_off.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="lt" />
+<div id="setup_bottom_bar">
+    
+</div>
+<script>
+    $('#setup').find('.setup_button').removeClass('setup_button_selected');
+    $('#setup_button_network').addClass('setup_button_selected');
+    $('#setup_pointer').css('left','53px');
+    drawVideoSwitch();
+    $('#button_eth').click(function(){
+        setupNetworkID = $(this).data('netID');
+        $.get('setup/setup_network-2.html', function(data){
+            $('#setup').find('.setup_action').unbind('click');
+            $('#setup').html(data);
+        });
+    });
+    $('#button_wifi').click(function(){
+        setupNetworkID = $(this).data('netID');
+        $.get('setup/setup_network_wifi-1.html', function(data){
+            $('#setup').find('.setup_action').unbind('click');
+            $('#setup').html(data);
+        });
+    });
+    
+    checkConnections = function(result){
+        if(result.Success){
+            var ethOn = false;
+            var wifiOn = false;
+            for(var i=0; i<result.NetworkInterfaces.length; i++){
+                if(result.NetworkInterfaces[i].IsWifi){
+                    wifiOn = true;
+                    $('#button_wifi').data('netID',result.NetworkInterfaces[i].NetworkId);
+                    $('#button_wifi').show();
+                } else {
+                    ethOn = true;
+                    $('#button_eth').data('netID',result.NetworkInterfaces[i].NetworkId);
+                    $('#button_eth').show();
+                }
+            }
+            if(!ethOn) $('#button_eth').replaceWith('<div>'+_i18n_.getHTML("GUI_CFG_SETUP_ETH_NOTFOUND")+'</div>');
+            if(!wifiOn) $('#button_wifi').replaceWith('<div>'+_i18n_.getHTML("GUI_CFG_SETUP_WIFI_NOTFOUND")+'</div>');
+        } else {
+            openMessagePopup('#errorPop',result.ErrorCode,result.ErrorMessage,_i18n_.getHTML("COMMON_OK"));
+        }
+    };
+    
+    JAMBO_APP.DeviceWebServices.runAPI('get_network_interfaces','{}',checkConnections);
+</script>

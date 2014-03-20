@@ -1,0 +1,30 @@
+/* 
+    Document   : fancynancyinputs
+    Created on : Apr 3, 2012, 11:31:19 AM
+    Author     : wesblake
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/* Radio/Checkbox Switch */
+span.field { float: right; }
+.cb-esp, .cb-eng, .cb-esp span, .cb-eng span
+    { background: url(../img/switch.gif) transparent repeat-x; display: block; float: left; }
+.cb-esp span, .cb-eng span
+    { line-height: 25px; display: block; background-repeat: no-repeat; background-color:transparent; color: #675f5f; }
+.cb-esp span { background-position: left -75px; padding: 0 5px; }
+.cb-eng span { background-position: right -150px;padding: 0 5px; }
+.cb-eng.selected { background-position: 0 -25px; }
+.cb-eng.selected span { background-position: right -175px; color: #fff; }
+.cb-esp.selected { background-position: 0 -50px; }
+.cb-esp.selected span { background-position: left -125px; color: #fff; }
+.switch label, .switch label span { cursor: pointer; font-size: 0.75em; }
+.switch input { display: none; }
+
+/* Slider switch */
+div.iphone_switch_container { height:24px; width:84px; position: relative; overflow: hidden; }
+img.iphone_switch { height:24px; width:84px; background:url(../img/iphone_switch.png) transparent no-repeat; background-position:0px; }

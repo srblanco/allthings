@@ -1,0 +1,220 @@
+/**
+	GeneralUI.com layout overrides
+ */
+
+.offscreen {
+	position:absolute; top:-10000px; left:-10000px; }
+
+#headerRow {
+	background:url(../img/header-img-1.jpg) no-repeat; }
+
+.top-bar {
+	background-color:transparent; }
+
+h1.title {
+	width:219px;
+	height:55px;
+	background:url(../img/gui_sprite.png) 0 0 no-repeat; }
+
+ul.title-area {
+	margin:21px 0 0 30px !important; }
+
+nav section.top-bar-section {
+	padding-top:34px; }
+
+.top-bar-section ul {
+	background-color:transparent; }
+
+.top-bar-section ul li:hover:not(.has-form) > a {
+	background:transparent !important;
+	color:#6da42f;
+	font-weight:200; }
+
+.top-bar-section ul li > a {
+	font-weight:200 !important; }
+
+#headerContent {
+	text-align:center; }
+
+#headerContent h1 {
+	color:#ffffff;
+	margin-top:9rem;
+	margin-bottom:0; }
+
+#headerContent p {
+	color:#6dcf3f;
+	font-size:1.25rem;
+	font-weight:100; }
+
+#headerContent .firstcol {
+	padding-left:5.5rem !important;
+	padding-right:0.1rem !important;
+}
+#headerContent .middlecol {
+	padding-left:0.4rem !important;
+	padding-right:0.4rem !important;
+}
+#headerContent .lastcol {
+	padding-left:0.1rem !important;
+	padding-right:5.5rem !important;
+}
+
+#wearedevelopers ul li {
+	padding-bottom:0 !important; }
+
+#ourclients h5,
+#engineeringfocus h5 {
+	font-size:2.3rem;
+	line-height:2.3rem;
+	color:#373737;
+	margin-top:5.5rem !important;
+	margin-bottom:.85rem !important;
+	font-weight:100; }
+
+#ourclients p,
+#engineeringfocus p {
+	font-size:1.48rem;
+	line-height:1.48rem;
+	color:#828a94;
+	margin-bottom:2.5rem !important;
+	font-weight:100; }
+
+#ourclients h5,
+#ourclients p,
+#engineeringfocus h5,
+#engineeringfocus p {
+	margin: 0 1.7rem; }
+
+#ourclients ul,
+#engineeringfocus ul {
+	margin: 0 1rem; }
+
+#ourclients {
+	background:url(../img/hp-ourclients-bg.jpg) repeat-x; }
+
+#engineeringfocus {
+	background-color:#2f3c4d; }
+	
+#engineeringfocus h5 {
+	color:#ffffff; }
+	
+#engineeringfocus div.CTAbutton, #ourclients div.CTAbutton {
+	float:right;
+	margin:0 1rem; }
+
+#engineeringfocus div.CTAbutton a, #ourclients div.CTAbutton a {
+	background-color:transparent;
+	border:1px solid #828a94;
+	border-radius:5px;
+	color:#828a94;
+	padding-right:1.1rem; }
+
+#engineeringfocus div.CTAbutton a > div, #ourclients div.CTAbutton a > div {
+	width:7px;
+	height:11px;
+	float:right;
+	margin:1px 0 0 13px;
+	background:url(../img/gui_sprite.png) -1193px 0px no-repeat transparent; }
+
+#wearedevelopers div.CTAbutton a {
+	background-color:transparent;
+	border:1px solid #ffffff;
+	border-radius:5px;
+	color:#ffffff;
+	padding-right:1.1rem;
+	background-color:#6dc541; }
+
+#wearedevelopers div.CTAbutton a > div {
+	width:7px;
+	height:11px;
+	float:right;
+	margin:1px 0 0 13px;
+	background:url(../img/gui_sprite.png) -1185px 0px no-repeat transparent; }
+
+#wearedevelopers div.circlesection {
+	text-align:center;
+	color:#ffffff; }
+
+@media only screen and (min-width:240px) {
+	#wearedevelopers div.circlesection {
+		width:100%;
+		height:100%;
+		margin:20px auto;
+		background-color:#ff0000;
+	}
+}
+@media only screen and (min-width:463px) {
+	#wearedevelopers div.circlesection {
+		width:448px;
+		height:448px;
+		margin:20px auto;
+		background:url(../img/green_circle.png) no-repeat;
+	}
+}/*
+@media only screen and (min-width: 40.063em) {
+	#wearedevelopers div.circlesection {
+		width:448px;
+		margin:0 auto;
+		background-color:#00ffcc;
+	}
+}
+@media only screen and (min-width: 64.063em) {
+	#wearedevelopers div.circlesection {
+		width:448px;
+		margin:0 auto;
+		background-color:#ffcc00;
+	}
+}
+@media only screen and (min-width: 90.063em) {
+	#wearedevelopers div.circlesection {
+		width:448px;
+		margin:0 auto;
+		background-color:#cc00ff;
+	}
+}
+@media only screen and (min-width: 120.063em) {
+	#wearedevelopers div.circlesection {
+		width:448px;
+		margin:0 auto;
+		background-color:#00ccff;
+	}
+}*/
+#engineeringfocus p {
+	color:#ffffff; }
+
+#engineeringfocus div > div:first-child {
+	text-align:center; }
+
+#engineeringfocus div > div:nth-child(2) {
+	padding: 1.4rem 1rem;
+	background-color:#273343;
+	letter-spacing:.1em; }
+
+#engineeringfocus div > div:nth-child(2) p {
+	font-size:.8rem;
+	line-height:1rem;
+	margin:0 0 0 0 !important;
+}
+
+#engineeringfocus div div h6 {
+	font-size:1rem;
+	color:#67c63a;
+	font-weight:100;
+	margin-top:0 !important;
+	line-height:1.2; }
+
+.small-block-grid-3 > li:nth-child(3n+1) {
+	padding-left: 0.65rem !important;
+	padding-right: 0.65rem !important; }
+
+.small-block-grid-3 > li:nth-child(3n+2) {
+	padding-left: 0.65rem !important;
+	padding-right: 0.65rem !important; }
+
+.small-block-grid-3 > li:nth-child(3n) {
+	padding-left: 0.65rem !important;
+	padding-right: 0.65rem !important; }
+
+#siteFooter {
+	padding-top:13px;
+    background: url(../img/gui_sprite.png) 0px -57px repeat-x #e6e6e6 !important; }

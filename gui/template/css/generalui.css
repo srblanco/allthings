@@ -1,0 +1,79 @@
+body#clients-page .img-responsive {
+    width:100%;
+}
+
+/**
+    Begin clients page styles
+    some of these may be moved out to global
+ */
+#navOne {
+    background:#2f3c4d;
+}
+
+.navbar-nav>li>a {
+    color: #6b848d !important;
+    text-transform: uppercase;
+}
+
+.navbar-nav>li>a:hover {
+    background-color:#999 !important;
+}
+
+#client-context {
+    padding:36px 0 30px;
+    background:url(../images/background/hp-ourclients-bg.jpg);
+}
+
+#client-context .breadcrumb {
+    background-color:transparent;
+    margin-bottom:28px;
+    padding:0;
+}
+#client-context .breadcrumb {
+    font-size: 1.2em;
+}
+#client-context h3.section-title {
+    font-size:2.6em;
+    color:#373737;
+    text-transform:none;
+    border-bottom:none;
+    font-weight:100;
+    padding:0;
+    margin:0;
+    line-height:1.05;
+}
+
+#client-context .container p {
+    font-size:1.8em;
+    margin: 8px 0 52px;
+    font-weight:100;
+    color:#828a94;
+}
+
+#client-context .panel-heading {
+    padding:0;
+}
+#client-context .panel-body {
+    position:relative;
+    margin-top:-53px;
+    color:#ffffff;
+    z-index:0;
+}
+.panel-text {
+    z-index:2;
+}
+.panel-bg {
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:1;
+    background: -moz-linear-gradient(left,  rgba(75,237,0,0.85) 0%, rgba(146,238,103,0.85) 65%, rgba(184,239,159,0.25) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(75,237,0,0.85)), color-stop(65%,rgba(146,238,103,0.85)), color-stop(100%,rgba(184,239,159,0.25))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(75,237,0,0.85) 0%,rgba(146,238,103,0.85) 65%,rgba(184,239,159,0.25) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(75,237,0,0.85) 0%,rgba(146,238,103,0.85) 65%,rgba(184,239,159,0.25) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(75,237,0,0.85) 0%,rgba(146,238,103,0.85) 65%,rgba(184,239,159,0.25) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(75,237,0,0.85) 0%,rgba(146,238,103,0.85) 65%,rgba(184,239,159,0.25) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d94bed00', endColorstr='#00b8ef9f',GradientType=1 ); /* IE6-9 */
+}

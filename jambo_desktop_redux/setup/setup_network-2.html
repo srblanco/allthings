@@ -1,0 +1,46 @@
+<hr class="lt" />
+<div id="setup_bar">
+    <div class="label cell i18n setup_label" data-i18n_key="GUI_CFG_SETUP_SETUP_LABEL">Setup</div>
+    <div id="setup_button_account" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_ACCOUNT">Account</div>
+    <div id="setup_button_camera" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_CAMERA">Camera</div>
+    <div id="setup_button_network" class="setup_button setup_button_selected" data-i18n_key="GUI_CFG_SETUP_BC_NETWORK">Network</div>
+</div>
+<hr class="lt" />
+<img id="setup_pointer" src="img/setup_pointer.gif"/>
+<div id="setup_page_label" class="label cell i18n" data-i18n_key="GUI_CFG_SETUP_NETWORK_INFO_LABEL">Success!</div>
+<div id="setup_container">
+    <div id="setup_left">
+    </div>
+</div>
+<hr class="lt" />
+<div id="setup_bottom_bar">
+    <div id="button_next" class="setup_button_right setup_action" style="width: 100px; height: 45px; background-color: #898989;">Next</div>
+</div>
+<script>
+    $('#setup').find('.setup_button').removeClass('setup_button_selected');
+    $('#setup_button_network').addClass('setup_button_selected');
+    $('#setup_pointer').css('left','53px');
+    $('#button_next').click(function(){
+        $.get('setup/setup_camera-1.html', function(data){
+            $('#setup').find('.setup_action').unbind('click');
+            $('#setup').html(data);
+        });
+    });
+    
+    gotNetInfo = function(result){
+        if(result.Success){
+            var isDHCP = (result.NetworkInfo.DHCPEnabled)?"On":"Off";
+            $('#setup_left').append('<span style="float: left;">IP</span><span style="float: right;">'+result.NetworkInfo.IP+'</span><hr class="lt" /><br/>');
+            $('#setup_left').append('<span style="float: left;">DHCP</span><span style="float: right;">'+isDHCP+'</span><hr class="lt" /><br/>');
+            if(result.NetworkInfo.DHCPEnabled)
+                $('#setup_left').append('<span style="float: left;">DHCP Server</span><span style="float: right;">'+result.NetworkInfo.DHCP+'</span><hr class="lt" /><br/>');
+            $('#setup_left').append('<span style="float: left;">Gateway</span><span style="float: right;">'+result.NetworkInfo.Gateway+'</span><hr class="lt" /><br/>');
+            $('#setup_left').append('<span style="float: left;">DNS</span><span style="float: right;">'+result.NetworkInfo.DNS+'</span><hr class="lt" /><br/>');
+            $('#setup_left').append('<span style="float: left;">Subnet Mask</span><span style="float: right;">'+result.NetworkInfo.SubnetMask+'</span><hr class="lt" />');
+        } else {
+            openMessagePopup('#errorPop',result.ErrorCode,result.ErrorMessage);
+        }
+    };
+    
+    JAMBO_APP.DeviceWebServices.runAPI('get_network_info','{}',gotNetInfo);
+</script>

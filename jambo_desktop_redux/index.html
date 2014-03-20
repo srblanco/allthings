@@ -1,0 +1,1213 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        
+        <!--WKRASKO - Loading external css before external js ensure they are downloaded in parallel-->
+        <link rel="stylesheet" type="text/css" href="css/dark-hive/jquery-ui-1.8.18.custom.css" />
+        <link rel="stylesheet" type="text/css" href="css/global.css" />
+        <link rel="stylesheet" type="text/css" href="css/fancynancyinputs.css" />
+        
+        <script type="text/javascript" src="js-common/lib/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.tmpl.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.json-2.2.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.crypt.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery-ui-1.8.18.custom.min.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.maskedinput-1.3.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.inlinecomplete.js"></script>
+        <script type="text/javascript" src="js/jquery-extensions.js"></script>
+        
+        <script type="text/javascript" src="js-common/classes/Line.js"></script>
+        <script type="text/javascript" src="js-common/classes/LineRepository.js"></script>
+        <script type="text/javascript" src="js-common/classes/WindowsRepository.js"></script>
+        <script type="text/javascript" src="js-common/classes/Command.js"></script>
+        <script type="text/javascript" src="js-common/classes/Response.js"></script>
+        <script type="text/javascript" src="js-common/classes/Event.js"></script>
+        <script type="text/javascript" src="js-common/classes/__CoreListener__.js"></script>
+        <script type="text/javascript" src="js-common/classes/__ThisWindowProxy__.js"></script>
+
+        <script type="text/javascript" src="js-common/classes/I18N.js"></script>
+        <script type="text/javascript" src="js-common/i18n/en_US.js"></script>
+        <script type="text/javascript" src="js-common/i18n/es_ES.js"></script>
+        
+        <script type="text/javascript" src="js-common/utils.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/index-coreListener.js"></script>
+        
+        <script type="text/javascript" src="js-common/PurpleClasses/app.js"></script>
+        <script type="text/javascript" src="js-common/PurpleClasses/Contacts.js"></script>
+        <script type="text/javascript" src="js-common/PurpleClasses/WebServices.js"></script>
+        <script type="text/javascript" src="js-common/PurpleClasses/PurpleMail.js"></script>
+        <script type="text/javascript" src="js-common/settings.js"></script>
+        <script type="text/javascript" src="js-common/PurpleClasses/JamboSocket.js"></script>
+        <script type="text/javascript" src="js-common/classes/InstantMsg.js"></script>
+    </head>
+    
+    <body ondragstart="return false" draggable="false">
+        <div id="kiosk_unlock"></div>
+        <input type="button" id="kiosk_e911_button" />
+        <div id="startupMask" class="dn">
+            <div id="loadingDiv" class="dn noise_light">
+                <div id="loadingLogo" class="logo_135x51_fff"></div>
+                <div id="loading">
+                    <hr class="dk" />
+                    <div id="loadingStatus" class="i18n" data-i18n_key="GUI_SYSTRAY_MSG_LOADING_STATUS1"></div>
+                    <div class="meter">
+                        <span id="fuel" style="width: 0px;"></span>
+                        <div id="fuelPercent"><span id="fuelPercentValue">0%</span></div>
+                    </div>
+                </div>
+                <hr class="dk" />
+            </div>
+            <div id="info" class="dn">
+                <div id="mainMessage" class="rndpop noise_light"></div>
+            </div>
+            <div id="valignmid_wrapper">
+                <div id="signin" class="dn">
+                    <input type="hidden" id="loginServer" value="P3.sip.prod.purple.us"/>
+                    <div id="signinLogo" class="p3-signin-icon"></div>
+                    <div id="signinInner" class="rndpop noise_light">
+                        <div id="signinLabelBlock">
+                            <div id="signInAs" class="i18n fl" data-i18n_key="GUI_CFG_GENERAL_SIGNIN">Sign in as:</div>
+                            <span class="field switch fr">
+                                <input type="radio" id="lang_1" name="field" />
+                                <input type="radio" id="lang_2" name="field" checked />
+                                <label for="lang_1" class="cb-esp"><span class="i18n" data-i18n_key="COMMON_LANG_LABEL_ESP">Spanish</span></label>
+                                <label for="lang_2" class="cb-eng"><span class="i18n" data-i18n_key="COMMON_LANG_LABEL_ENG">English</span></label>
+                            </span>
+                        </div>
+                        <hr class="lt" />
+                        <div id="userSelection">
+                            <input type="text" id="loginUsername" placeholder="Username"/><br />
+                            <input type="password" id="loginPassword" placeholder="Password"/>
+                        </div>
+                        <div id="signinBtns">
+                            <div id="signin_buttonWrapper" class="fl">
+                                <div id="signin_rememberMe"><input type="checkbox" name="loginSavePassword" id="loginSavePassword" value="1"/> <label for="loginSavePassword" class="i18n" data-i18n_key="GUI_MCSLOGIN_SAVE_PASSWORD_LABEL">Remember me</label></div>
+                                <div id="signin_automatic"><input type="checkbox" name="loginAutomatic" id="loginAutomatic" value="1"/> <label for="loginAutomatic" class="i18n" data-i18n_key="GUI_MCSLOGIN_AUTOMATIC_SIGNIN">Sign me in automatically</label></div>
+                            </div>
+                            <div id="loginDo" class="signinBtn fr i18n" data-i18n_key="GUI_CFG_GENERAL_SIGNIN" onclick="">Sign in</div>
+                        </div>
+                    </div>
+                    <div id="forgotPassword_btnBox" class="_btnBox fl">
+                        <div id="forgotPassword_btn" class="_btn_ns"><span class="i18n" data-i18n_key="GUI_MCSLOGIN_FORGOT_PASSWORD">Forgot password</span></div>
+                    </div>
+                    <div id="removeAccount_btnBox" class="_btnBox fl">
+                        <div id="removeAccount_btn" class="_btn_ns"><span class="i18n" data-i18n_key="GUI_MCSLOGIN_REMOVE_ACCOUNT">Remove Account</span></div>
+                    </div>
+                    <!-- BEGIN PNG-472 KTRUMBLE 10042012 - signin screen updates -->
+                    <div id="signUp_btnBox" class="_btnBox fl">
+                        <div id="signUp_btn" class="_btn_ns"><span class="i18n" data-i18n_key="GUI_MCSLOGIN_SIGNUP">Sign up</span></div>
+                    </div>
+                    <div id="signInInfo" class="fr">
+                        <div id="help_vrs_numbers">
+                            <div id="vrs877"><span class="grayDigits">VRS: </span><span class="i18n" data-i18n_key="GUI_MCSLOGIN_INFO">(877) 467-4877</span></div>
+                            <div id="help877"><span class="grayDigits"><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_HELP">Help</span>: </span>(877) 885-3172</div>
+                    <!-- END PNG-472 -->
+                        </div>
+                    </div>
+                    <div id="signinBottomDisabler" class="dn fl"></div>
+                    <div id="signinVersion" class="cb fr"></div>
+                </div>
+                <div id="appInfo" class="startupModule dn">
+                    <div id="optionalSoftwareUpdate" class="dn softwareUpdate rndpop noise_light">
+                        <span id="optionalUpdateMessage" class="i18n" data-i18n_key="GUI_UPDATE_NEW_VERSION_OPTIONAL">A new version (insert version here) is available.</span><br />
+                        <a href="javascript:void(0);" target="_blank" class="newVersionWhatsNewUrl i18n" data-i18n_key="GUI_UPDATE_WHATS_NEW">What's new?</a>
+                        <br />
+                        <br />
+                        <div id="updateNow" class="button purple i18n" data-i18n_key="GUI_UPDATE_UPDATE_NOW">Update now</div><br />
+                        <div id="updateLater" class="button i18n" data-i18n_key="GUI_UPDATE_UPDATE_LATER">Update later</div><br />
+                        <!--NOT SUPPORTED BY PURPLE<div id="skipThisVersion" class="button i18n" data-i18n_key="GUI_UPDATE_SKIP_THIS_VERSION">Skip this version</div>-->
+                    </div>
+                    <div id="forcedSoftwareUpdate" class="dn softwareUpdate rndpop noise_light">
+                        <span id="forcedUpdateMessage" class="i18n" data-i18n_key="GUI_UPDATE_NEW_VERSION_FORCED">A new version (insert version here) is available, update is required.</span><br />
+                        <a href="javascript:void(0);" class="newVersionWhatsNewUrl i18n" data-i18n_key="GUI_UPDATE_WHATS_NEW">What's new?</a><br />
+                        <br />
+                        <br />
+                        <div id="updateNow" class="button purple i18n" data-i18n_key="GUI_UPDATE_UPDATE_NOW">Update now</div><br />
+                        <div id="quit" class="button red i18n" data-i18n_key="COMMON_QUIT">Quit</div>
+                    </div>
+                    <div id="softwareUpdateInProgress"  class="dn softwareUpdate rndpop noise_light">
+                        <div id="downloadMessage"></div>
+                        <div id="downloadProgress" class="progressBarWidget animated"><div class="progressBar"></div></div>
+                        <br />
+                        <br />
+                        <div id="quit" class="button red hidden i18n" data-i18n_key="COMMON_QUIT">Quit</div>
+                        <div id="stopUpdate" class="button hidden i18n" data-i18n_key="GUI_UPDATE_STOP_UPDATE">Stop update</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="popDiv" class="dn"></div>
+        <div id="errorPop" class="rndpop dn noise_light">
+            <div id="errorCodeDiv" class="popupTitle">Error Code</div>
+            <hr class="lt" />
+            <div id="errorMessageContainer">
+                <div id="errorMessageDiv" class="popupMessage">Error Message</div>
+            </div>
+            <hr class="lt" />
+            <div id="errorPopButtons">
+                <div id="errorCancel" class="cancel handler i18n dn" data-i18n_key="COMMON_CANCEL">Cancel</div>
+                <div id="errorOK" class="close handler">OK</div>
+            </div>
+        </div>
+        <div id="messagePop" class="rndpop dn noise_light">
+            <div id="messageTitleDiv" class="popupTitle">Error Code</div>
+            <hr class="lt" />
+            <div id="messageTextContainer">
+                <div id="messageTextDiv" class="popupMessage">Error Message</div>
+            </div>
+            <hr class="lt" />
+            <div style="width:100%;">
+                <div id="messageCancel" class="cancel handler i18n fl dn" data-i18n_key="COMMON_CANCEL">Cancel</div>
+                <div id="messageOK" class="close handler i18n fr" data-i18n_key="COMMON_OK">OK</div>
+            </div>
+        </div>
+        <div id="prevPop" class="dn">
+            <center style="margin-top: 35px;height:60px;">
+                <span id="blockedCallersOK" class="close handler i18n" data-i18n_key="COMMON_CLOSE">Close</span>
+            </center>
+        </div>
+        <div id="transcriptPop" class="rndpop dn noise_light">
+            <div id="messageTitleDiv" class="popupTitle">Chat Transcripts</div>
+            <hr class="lt" />
+            <div id="transcriptPopTextContainer">
+                <div id="transcriptPopTextDiv" class="popupMessage"></div>
+            </div>
+            <hr class="lt" />
+            <center style="margin-top: 35px;height:60px;">
+                <span id="messageOK" class="close handler purpleOK">Done</span>
+            </center>
+        </div>
+        <div id="blockedCallersPop" class="rndpop dn noise_light">
+            <div id="blockedCallersLabelWrapper">
+                <div id="blockedCallersLabel" class="popupTitle">About</div>
+            </div>
+            <hr class="lt" />
+            <div id="blockedCallersContent" class="popupMessage"></div>
+            <hr class="lt" />
+            <center style="margin-top: 35px; min-height:58px;">
+                <span id="blockedCallersOK" class="close handler i18n" data-i18n_key="COMMON_OK">OK</span>
+            </center>
+        </div>
+        <div id="incomingCall" class="rndpop dn noise_light">
+            <div id="incomingCallLabel" class="i18n" data-i18n_key="GUI_POPUP_INCOMING_CALL">Incoming Call:</div>
+            <hr class="lt" />
+            <script id="incomingCallRowTemplate" type="text/x-jquery-tmpl">
+            <div class="incomingCallRow dn" data-lineNum="${lineNum}">
+                <div class="favStar fl dn"></div>
+                <div class="incomingCallMessage displayName fl" title="${displayName}">${displayName}</div>
+                <div class="incomingCallMessage dialString fr">${dialString}</div>
+                <div class="numType fr"></div>
+            </div>
+            <hr class="lt dn" data-lineNum="${lineNum}"/>
+            <div class="incomingCallControls dn" data-lineNum="${lineNum}">
+                <div id="decline" data-lineNum="${lineNum}" data-i18n_key="GUI_POPUP_INCOMING_REFUSE" class="incomingCallButton decline i18n fl">Ignore</div>
+                <div id="accept" data-lineNum="${lineNum}" data-i18n_key="GUI_POPUP_INCOMING_ACCEPT" class="incomingCallButton accept i18n fr">Answer</div>
+            </div>
+            </script>
+            <div id="incomingCallContent"></div>
+        </div>
+        <div id="missedCalls" class="rndpop dn noise_light">
+            <div id="createEditContactLabelWrapper">
+                <div id="missedCallsHeader" class="fl"><span id="missedCallsLabelCount" class="dn"></span><span id="missedCallsLabel"></span></div>
+                <div class="fr dn" id="missedCallsPaginator"></div>
+            </div>
+            <hr class="cb lt" />
+            <div id="missedCallsContainer">
+                <div class="missedCallsBackArrow fl dn"></div>
+                <div class="missedCallsForwardArrow fr dn"></div>
+            </div>
+            <hr class="lt" />
+            <span id="missedCallsIgnore" class="cancel handler fl"></span>
+            <span id="missedCallsCallBack" class="close handler fr i18n" data-i18n_key="GUI_MISSED_CALLS_CALLBACK"></span>
+        </div>
+        <div id="aboutPop" class="rndpop dn noise_light">
+            <div id="createEditContactLabelWrapper"><div id="aboutLabel" class="popupTitle i18n" data-i18n_key="GUI_CFG_TAB_TITLE_ABOUT">About</div></div>
+            <hr class="lt" />
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td valign="top" id="aboutPop_p3Logo"><img src="img/p3-tng-icon-110.png" /></td>
+                    <td valign="top" id="aboutPop_aboutP3">
+                        <div id="aboutPop_P3Title">P3</div>
+                        <div id="aboutPop_vRev"><span class="i18n" data-i18n_key="GUI_CFG_ABOUT_VERSION"></span> <span id="mainVersion"></span> r<span id="buildNumber"></span></div>
+                        <div id="aboutPop_copyright" class="cb"><span class="i18n" data-i18n_key="GUI_CFG_ABOUT_COPYRIGHT"></span>&nbsp;&copy; 2013 Purple Communications, Inc. All rights reserved</div><!-- PNG-815 KTRUMBLE updating copyright to 2013 -->
+                        <div id="aboutPop_TnC" class="fl aboutPop_links i18n" data-i18n_key="GUI_CFG_ABOUT_LINK_TERMS">Relay Terms & Conditions</div>
+                        <div id="aboutPop_privacy" class="fr aboutPop_links i18n" data-i18n_key="GUI_CFG_ABOUT_LINK_PRIVACY">Privacy Policy</div>
+                    </td>
+                </tr>
+            </table>
+            <hr class="lt" />
+            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td valign="top" id="aboutPop_LifeSizeLogo"><img src="img/lifesize-icon-110.png" /></td>
+                    <td valign="top" id="aboutPop_LifeSizeCopyright">
+                        Portions of this software &copy; 2001- 2013 Logitech, and its licensors. All rights reserved. LifeSize, the LifeSize logo and other LifeSize marks, are owned by Logitech and may be registered. All other trademarks are the property of their respective owners.
+                    </td>
+                </tr>
+            </table>
+            <!-- END PNG-810 -->
+            <hr class="lt" />
+            <div id="aboutClose" class="close handler i18n" data-i18n_key="COMMON_OK">OK</div>
+        </div>
+        <div id="inputPop" class="rndpop dn noise_light">
+            <div id="createEditContactLabelWrapper"><div id="inputLabel" class="popupTitle">About</div></div>
+            <hr class="lt" />
+            <div id="inputContent"></div>
+            <hr class="lt" />
+            <div style="width:100%;">
+                <div id="inputCancel" class="cancel handler i18n fl" data-i18n_key="COMMON_CANCEL" onclick="closeInputPop();">Cancel</div>
+                <div id="inputOK" class="close handler i18n fr" data-i18n_key="COMMON_OK">OK</div>
+            </div>
+        </div>
+        <div id="createEditContactPop" class="rndpop dn noise_light">
+            <div id="createEditContactLabelWrapper">
+                <div id="createEditContactLabel" class="popupTitle i18n fl" data-i18n_key="GUI_ADDRESSBOOK_ADDCONTACT">Create new Contact</div>
+                <div id="createEditContactDelete" class="fr dn"></div>
+            </div>
+            <hr class="lt" />
+            <div id="createEditFieldWrapper">
+                <div id="contactPopNameLabel" class="i18n dn" data-i18n_key="GUI_CONTACT_NAME">Name</div>
+                <input type="text" id="createEditContactFirstName" name="createEditContactFirstName" placeholder="First" maxlength="50"/>
+                <input type="text" id="createEditContactLastName" name="createEditContactLastName" placeholder="Last" maxlength="50"/>
+                <input type="hidden" id="createEditContactID" name="createEditContactID" value=""/>
+                <div id="createEditContactNumbersWrapper">
+                    <table id="createEditContactNumbers" cellspacing="0"><tbody>
+                    </tbody></table>
+                </div>
+                <div id="addNumberIcon"><div id="addNumberIconSpr" class="fl">&nbsp;</div><div class="i18n" data-i18n_key="GUI_CONTACT_ADD_NUMBER">Add another number</div></div>
+                <hr class="lt"/>
+            </div>
+            <div id="createEditContactCancel" class="fl close handler i18n" data-i18n_key="COMMON_CANCEL">Cancel</div><div id="createEditContactSave" class="fr ce_save handler i18n" data-i18n_key="COMMON_SAVE">Save</div>
+        </div>
+        <div id="editE911Pop" class="rndpop dn noise_light">
+            <div id="editE911LabelWrapper">
+                <div id="editE911Label" class="popupTitle i18n fl" data-i18n_key="GUI_E911_EDIT">E911</div>
+            </div>
+            <hr class="lt" />
+            <div id="editE911FieldWrapper">
+                <table border="0" id="editE911Table" class="dn">
+                    <tbody>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_FNAME"></label></td>
+                            <td><input type="text" name="e911_fname" id="e911_fname"/></td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_LNAME"></label></td>
+                            <td><input type="text" name="e911_lname" id="e911_lname"/></td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_ADDRESS"></label></td>
+                            <td><input type="text" name="e911_address" id="e911_address"/></td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_ADDRESS2">Address:</label></td>
+                            <td><input type="text" name="e911_address2" id="e911_address2"/></td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_CITY">City:</label></td>
+                            <td><input type="text" name="e911_city" id="e911_city"/></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="i18n" data-i18n_key="GUI_E911_STATE">State</label>
+                                <select name="e911_state" id="e911_state" style="margin-right: 10px;"></select>
+                            </td>
+                            <td>
+                                <label class="i18n" data-i18n_key="GUI_E911_ZIP">Zip</label>
+                                <input type="text" name="e911_zip" id="e911_zip" style="width: 55px; margin-right: 10px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_DOB">Date of Birth</label></td>
+                            <td><input type="text" name="e911_dob" id="e911_dob"/></td>
+                        </tr>
+                        <tr>
+                            <td><label class="i18n" data-i18n_key="GUI_E911_ADDRESSIS" style="width:195px; margin-top:5px; margin-bottom:5px;">Address is</label></td>
+                            <td>
+                                <div id="e911address_toggle" class="fl" style="margin-top:5px; margin-bottom:5px;">
+                                    <input type="radio" id="e911address_radio0" name="e911AddressIs_radio" value="H" checked /><label for="e911address_radio0" class="typeToggle first i18n" data-i18n_key="GUI_HOME" style="margin-right:0;">Home</label>
+                                    <input type="radio" id="e911address_radio1" name="e911AddressIs_radio" value="W" /><label for="e911address_radio1" class="typeToggle i18n" data-i18n_key="GUI_WORK">Work</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="addressSuggestionsWrapper" class="dn">
+                    <label class="i18n" data-i18n_key="GUI_E911_SUGGESTIONS"></label>
+                    <table border="0" id="addressSuggestions">
+                    </table>
+                    <div id="reeditE911"><div class="i18n" data-i18n_key="GUI_E911_RETRY"></div></div>
+                </div>
+                <center><img src="img/loading.gif" width="22" height="22" border="0" alt="Loading..." id="editE911Working" class="dn"/></center>
+            </div>
+            <hr class="lt"/>
+            <div id="editE911Cancel" class="fl close handler i18n" data-i18n_key="COMMON_CANCEL">Cancel</div><div id="editE911Save" class="fr ce_save handler i18n" data-i18n_key="GUI_E911_VERIFY">Save</div>
+        </div>
+        <div id="addFavPop" class="rndpop dn noise_light">
+            <div id="addFavLabelWrapper">
+                <div id="addFavLabel1" class="popupTitle i18n" data-i18n_key="GUI_FAVORITES_NEW_FAVORITE"></div>
+            </div>
+            <hr class="cb lt" />
+            <div id="addFavFrame1" class="addfav_frame">
+                <div id="searchFavContactIcon" class="searchIcon fl"></div>
+                <input type="text" id="searchContacts" value="Search here by typing a Contact number or name" onfocus="if(this.value=='Search here by typing a Contact number or name'){this.value='';this.style.color='black';}" onblur="if(this.value==''){this.value='Search here by typing a Contact number or name';this.style.color='gray';}" class="i18n fl" data-i18n_key="GUI_CALL_NEWFAVORITE_INPUT"/>
+                <div id="searchFavContacts" class="cb"></div>
+                <div id="addFavLearn" class="addfav_button handler i18n" data-i18n_key="GUI_FAVORITES_LEARN_BUTTON" onclick="$('#addFavFrame1').hide();$('#addFavButtons1').hide();$('#addFavFrame2').show();$('#addFavButtons2').show();"></div>
+            </div>
+            <div id="addFavFrame2" class="addfav_frame dn">
+                <div id="addFavLabel2" class="popupTitle i18n" data-i18n_key="GUI_FAVORITES_LEARN_LABEL"></div>
+                <div id="addFavVideoContainer">
+                    <div id="addFavVideo"></div>
+                    <div id="addFavVideoLabel" class="i18n" data-i18n_key="GUI_FAVORITES_LEARN_VIDEO_LABEL"></div>
+                </div>
+            </div>
+            <hr class="lt" />
+            <div id="addFavButtons1">
+                <div id="addFavCancel" class="addfav_button fl close handler i18n" data-i18n_key="COMMON_CANCEL"></div>
+                <div id="addFavSave" class="addfav_button fr close handler i18n" data-i18n_key="GUI_FAVORITES_SAVE_BUTTON"></div>
+            </div>
+            <div id="addFavButtons2" class="dn">
+                <div id="addFavBack" class="addfav_button handler i18n" data-i18n_key="GUI_FAVORITES_LEARN_BACK_BUTTON" onclick="$('#addFavFrame2').hide();$('#addFavButtons2').hide();$('#addFavFrame1').show();$('#addFavButtons1').show();"></div>
+            </div>
+        </div>
+        <div id="addToExistingPop" class="rndpop dn noise_light">
+            <div class="popupTitle i18n" data-i18n_key="GUI_CHOOSE_EXISTING_CONTACT"></div>
+            <hr class="cb lt" />
+            <div class="addToExisting_frame">
+                <div id="addToExistingContacts" class="i18n cb" data-i18n_key="GUI_CHOOSE_EXISTING_CONTACT_NOCONTACTS"></div>
+                <hr class="lt" />
+                <div id="addToExistingCancel" class="addfav_button fl close handler i18n" data-i18n_key="COMMON_CANCEL"></div>
+                <div id="addToExistingContinue" class="addfav_button fl close handler i18n" data-i18n_key="GUI_CHOOSE_EXISTING_CONTINUE"></div>
+            </div>
+        </div>
+        <div id="signOffTab" class="signOffTab i18n" data-i18n_key="MENU_LOGOUT" onClick="performDelayedLogOut();">sign off</div>
+        <div id="mainContainer">
+            <div id="contentDiv">
+                <div id="leftNav" class="fl">
+                    <div class="vAligner">
+                        <div class="lNavBtn fr lNavActive CallNav" id="NewCallBtn">
+                            <div id="callBtnOverlay" class="dn"><img src="img/ajax-loader-5.gif" class="fl" /><div class="fl i18n" data-i18n_key="GUI_CFG_AUDIO_RINGING">Ringing</div></div>
+                            <div class="lNavContent"><div class="fl"></div><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_CALL">Call</span></div>
+                        </div>
+                        <div class="lNavBtn fr" id="HistoryBtn">
+                            <div class="lNavContent"><div class="fl"></div><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_CALL_HISTORY">Call History</span><div id="missedCallsCount" class="fr">0</div></div>
+                        </div>
+                        <div class="lNavBtn fr" id="ContactsBtn">
+                            <div class="lNavContent"><div class="fl"></div><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_CONTACTS">Contacts</span></div>
+                        </div>
+                        <div class="lNavBtn fr" id="PurpleMailBtn">
+                            <div class="lNavContent"><div class="fl"></div><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_PM">PurpleMail</span><sup>TM</sup><div id="unreadPMCount" class="fr">0</div></div>
+                        </div>
+                        <div class="lNavBtn fr" id="SettingsBtn">
+                            <div class="lNavContent"><div class="fl"></div><span class="i18n" data-i18n_key="GUI_CFG_TAB_TITLE_SETTINGS">Settings</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="mainContentCall_vc" class="fl">
+                        <script id="activeCallRowTemplate" type="text/x-jquery-tmpl">
+                            <div id="calltab${lineNum}" class="tabControls fl dn">
+                                <div id="${lineLabel}" data-lineNum="${lineNum}" class="activeCall idle visible">
+                                    <div class="activeCallInner fl" style="cursor:pointer;">
+                                        <div id="callTabOverlay_${lineNum}" class="callTabOverlay dn"><div class="calling fl i18n" data-i18n_key="GUI_CFG_TAB_TITLE_CALLING">Calling:</div> <div class="fr activeCallDisplayName_overlay"></div></div>
+                                        <div class="fl activeCallInformation"><div class="activeCallDisplayName"></div></div>
+                                        <div class="fr activeCallInformation callStatus"><div class="activeCallStatus monospaced"></div></div>
+                                        <div class="fr activeCallInformation onhold dn"><div class="activeOnHold monospaced fr i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_ON_HOLD">On Hold</div></div>
+                                    </div>
+                                </div>
+                                <div id="kiosk_ringing_${lineNum}" class="dn kiosk_ringing_indicator"></div>
+                            </div>
+                        </script>
+                        <div id="activeCallRowContent" class="fl"></div>
+                        <div id="threeWayContainer" class="dn"><div id="threeWayButton"><div class="onCallBtnInner i18n" data-i18n_key="GUI_ONCALL_THREEWAY"></div></div></div>
+                        <div class="dn" id="videoPrivacySlide"><div id="videoPrivacySlideIcon"></div></div>
+                </div>
+                <div id="mainContentCall" class="fl">
+                    <div id="newCallControls" class="newCallControls_VC">
+                        <div class="newCallTabs fl">
+                            <div id="newCallControls0" class="newActiveCall fl dn" data-lineNum="0">
+                                <div data-lineNum="0" class="newActiveCallDrop fl">
+                                    <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_DROP">Drop</div>
+                                </div>
+                                <div class="newActiveCallControls fr dn">
+                                    <div data-lineNum="0" id="newActiveCallHold0" class="newActiveCallHold fl">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_HOLD">hold</div>
+                                    </div>
+                                    <div data-lineNum="0" id="newActiveCallResume0" class="newActiveCallResume fl dn">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_RESUME">resume</div>
+                                    </div>
+                                </div>
+                                <div class="newActiveIncomingCallControls dn" style="width:175px;">
+                                    <div data-lineNum="0" class="newActiveCallAnswer fl">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_POPUP_INCOMING_ACCEPT">Answer</div>
+                                    </div>
+                                    <div data-lineNum="0" class="newActiveCallIgnore fr">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_POPUP_INCOMING_REFUSE">Ignore</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="newCallControls1" class="newActiveCall fl dn" data-lineNum="1">
+                                <div data-lineNum="1" class="newActiveCallDrop fl">
+                                    <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_DROP">Drop</div>
+                                </div>
+                                <div class="newActiveCallControls fr">
+                                    <div data-lineNum="1" id="newActiveCallHold1" class="newActiveCallHold fl">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_HOLD">hold</div>
+                                    </div>
+                                    <div data-lineNum="1" id="newActiveCallResume1" class="newActiveCallResume fl dn" style="">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_PRIMARY_ACTIVECALL_RESUME" style="">resume</div>
+                                    </div>
+                                </div>
+                                <div class="newActiveIncomingCallControls dn" style="width:175px;">
+                                    <div data-lineNum="1" class="newActiveCallAnswer fl">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_POPUP_INCOMING_ACCEPT">Answer</div>
+                                    </div>
+                                    <div data-lineNum="1" class="newActiveCallIgnore fr">
+                                        <div class="newActiveCallControlInner i18n" data-i18n_key="GUI_POPUP_INCOMING_REFUSE">Ignore</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="newCallTabControls" class="fr">
+                            <div id="newVideoMute" class="callScreenControls fr" title="Video Privacy: On">
+                                <div class="callScreenInner notmuted" data-state="notmuted"></div>
+                            </div>
+                            <div id="newAudioMute" class="callScreenControls fr dn" title="Mic: On">
+                                <div class="callScreenInner notmuted" data-state="notmuted"></div>
+                            </div>
+                            <div id="newVideoLayout" class="callScreenControls fr dn" title="Video layout">
+                                <div class="callScreenInner comp0" data-state="comp0">
+                                    <div class="newVideoLayoutSpr"><img src="img/videocomp0.png" /></div>
+                                </div>
+                            </div>
+                            <!-- dave remove dn to work with VOM button when not in call -->
+                            <div id="newVideoFullScreen" class="newFullScreenControl callScreenControls fr dn" title="Video-only mode">
+                                <div class="callScreenInner"></div>
+                            </div>
+                        </div>
+                        <hr class="cb callCtrlHR" />
+                    </div>
+                    <div id="kiosk_mainarea" style="display: none;"></div>
+                    <div id="mainContentCall_dc" class="fl">
+                        <div id="dialSectionHead_wrapper">
+                            <div id="dialSectionHead" class="top dialSectionHead addCall"><span class="i18n" data-i18n_key="GUI_DIAL">Dial</span><div id="addCall"></div></div>
+                            <div id="dialViewer">
+                                <div id="outboundDialPad">
+                                    <div id="outboundWrapper">
+                                        <div id="outboundNumber">
+                                            <input type="text" id="outboundNumEntry" value="Dial a number" class="outboundNumEntry fl i18n" data-i18n_key="GUI_NUMBERINPUT_TEXT" onClick="this.select();" onfocus="if(this.value==_i18n_.get('GUI_NUMBERINPUT_TEXT')){this.value='';this.style.color='#252323';}" onblur="if(this.value=='' && !$('#dialViewer').is(':visible')){this.value=_i18n_.get('GUI_NUMBERINPUT_TEXT');this.style.color='#898989';}" />
+                                            <div id="outboundWrapper" class="fr">
+                                                <div id="outboundCallBtn" class="fl i18n" data-i18n_key="GUI_ADDRESSBOOK_CONTEXTUALMENU_CALL"></div>
+                                                <div id="invalidEntryMessage" class="dn"></div>
+                                            </div>
+                                            <div id="kiosk_flyout_button" style="display: none;"></div>
+                                            <div id="kiosk_flyout" style="display: none;">
+                                                <div class="body">
+                                                    <div class="scrollarea">
+                                                        <ul>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Purple VRS</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Purple Help</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Buzz Lightyear</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Mary Little Lamb</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Big Bad Wolf</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                            <li>
+                                                                <div class="right"></div>
+                                                                <div class="name">Purple VRS</div>
+                                                                <div class="num">877-456-2342</div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="bottom"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="inCallDialer" class="cb">
+                                        <div class="icDialerRow icDR_top dn">
+                                            <div class="icD_enteredNum"></div>
+                                        </div>
+                                        <div class="cb">
+                                            <div class="icDBtn fl ic_tlc" data-char="1"><div class="icDNumbers fl">1</div></div>
+                                            <div class="icDBtn fl ic_t" data-char="2"><div class="icDNumbers fl">2</div><div class="icABC cb">ABC</div></div>
+                                            <div class="icDBtn fl ic_trc" data-char="3"><div class="icDNumbers fl">3</div><div class="icABC cb">DEF</div></div>
+                                        </div>
+                                        <div class="cb">
+                                            <div class="icDBtn fl ic_l" data-char="4"><div class="icDNumbers fl">4</div><div class="icABC cb">GHI</div></div>
+                                            <div class="icDBtn fl" data-char="5"><div class="icDNumbers fl">5</div><div class="icABC cb">JKL</div></div>
+                                            <div class="icDBtn fl ic_r" data-char="6"><div class="icDNumbers fl">6</div><div class="icABC cb">MNO</div></div>
+                                        </div>
+                                        <div class="cb">
+                                            <div class="icDBtn fl ic_l" data-char="7"><div class="icDNumbers fl">7</div><div class="icABC cb">PQRS</div></div>
+                                            <div class="icDBtn fl" data-char="8"><div class="icDNumbers fl">8</div><div class="icABC cb">TUV</div></div>
+                                            <div class="icDBtn fl ic_r" data-char="9"><div class="icDNumbers fl">9</div><div class="icABC cb">WXYZ</div></div>
+                                        </div>
+                                        <div class="cb">
+                                            <div class="icDBtn fl ic_blc" data-char="ast"><div class="icDChar_Ast icVert1 fl">*</div></div>
+                                            <div class="icDBtn fl ic_b" data-char="0"><div class="icDNumbers icVert2 fl">0</div></div>
+                                            <div class="icDBtn fl ic_brc" data-char="hash"><div class="icDNumbers icVert3 fl">#</div></div>
+                                        </div>
+                                        <div class="cb"></div>
+                                    </div>
+                                </div>
+                                <div id="outboundCallSetting">
+                                    <div class="cb" id="inCallSettingsControl">
+                                        <div id="inCallSettingsGear" class="fl"></div>
+                                        <div class="i18n fl" data-i18n_key="COMMON_CALL_SETTINGS"></div>
+                                        <div id="inCallSettingsControlArrow" class="tsArrow_cs tsArrow_cs_open fr"></div>
+                                        <div id="callType_toggle" class="fr"></div>
+                                    </div>
+                                    <div id="inCallSettings_IPR" class="cb dn">
+                                        <hr class="dk cb" />
+                                        <div class="section" style="text-align:center;padding:0 0 4px 0;">
+                                            <div style="margin-top:-4px;"><label class="i18n" data-i18n_key="IPRELAY_OPERATOR_GENDER"></label></div>
+                                            <div id="opGender_toggle" style="margin:auto"></div>
+                                        </div>
+                                        <hr class="dk cb" />
+                                        <div class="section" style="text-align:center;padding:0 0 4px 0;">
+                                            <div style="margin-top:-4px;"><label class="i18n" data-i18n_key="IPRELAY_OPERATOR_LANGUAGE"></label></div>
+                                            <div id="opLanguage_toggle" style="margin:0 auto;"></div>
+                                        </div>
+                                        <hr class="dk cb" />
+                                        <div class="section">
+                                            <div id="specialInstructionsDiv_IPR">
+                                                <textarea name="specialInstructions_IPR" id="specialInstructions_IPR" maxlength="240" class="i18n" data-i18n_key="GUI_SETTINGS_CALL_SI" onfocus="if(this.value==_i18n_.get('GUI_SETTINGS_CALL_SI')){this.value='';this.style.color='#252323';}" onblur="if(this.value==''){this.value=_i18n_.get('GUI_SETTINGS_CALL_SI');this.style.color='#898989';}" ></textarea>
+                                            </div>
+                                        </div>
+                                        <hr class="dk cb" />
+                                        <div class="section" style="height:24px;padding:2px 0 0 0">
+                                            <div style="margin-top:1px;" class="fl"><label class="i18n" data-i18n_key="IPRELAY_VCO_CALLBACK"></label></div>
+                                            <input type="text" name="vcocallback" id="vcocallback" class="fl"/>
+                                        </div>
+                                    </div>
+                                    <div id="inCallSettings" class="cb">
+                                        <hr id="hr1" class="dk cb" />
+                                        <div class="section">
+                                            <div class="left">
+                                                <label id="terplang_toggle_label" class="i18n" data-i18n_key="GUI_SETTINGS_CALL_VILANG"></label>
+                                                <div class="cb"></div>
+                                                <div id="terplang_toggle"></div>
+                                            </div>
+                                            <div class="right">
+                                                <label id="announcevrs_toggle_label" class="i18n" id="relayAnnounce" data-i18n_key="GUI_SETTINGS_CALL_ANNOUNCE_VRS"></label>
+                                                <div class="cb"></div>
+                                                <div id="announcevrs_toggle"></div>
+                                            </div>
+                                        </div>
+                                        <hr id="hr2" class="dk cb" />
+                                        <div class="section">
+                                            <div id="specialInstructionsDiv">
+                                                <textarea name="specialInstructions" id="specialInstructions" maxlength="240" class="i18n" data-i18n_key="GUI_SETTINGS_CALL_SI" onfocus="if(this.value==_i18n_.get('GUI_SETTINGS_CALL_SI')){this.value='';this.style.color='#252323';}" onblur="if(this.value==''){this.value=_i18n_.get('GUI_SETTINGS_CALL_SI');this.style.color='#898989';}" ></textarea>
+                                            </div>
+                                        </div>
+                                        <hr id="hr3" class="dk cb" />
+                                        <hr id="hr4" class="dk cb" style="display: none;" />
+                                        <div class="section">
+                                            <label id="vcotype_toggle_label" style="display:block;" class="i18n" data-i18n_key="GUI_VCO_ONELINE">One-line VCO</label>
+                                            <div id="vcotype_toggle">
+                                                <input type="radio" id="vcoradio0" name="vcotype_radio" value="0" /><label id="vcoradio0_label" for="vcoradio0" class="first typeToggle i18n" data-i18n_key="GUI_VCO_OFF">Off</label>
+                                                <input type="radio" id="vcoradio1" name="vcotype_radio" value="1" /><label id="vco_oneline_label" for="vcoradio1" class="typeToggle i18n" data-i18n_key="GUI_VCO_ONELINE">One-line VCO</label>
+                                                <input type="radio" id="vcoradio2" name="vcotype_radio" value="2" /><label id="vcoradio2_label" for="vcoradio2" class="typeToggle i18n" data-i18n_key="GUI_VCO_TWOLINE">Two-line VCO</label>
+                                            </div>
+                                            <input type="text" name="vconumber" id="vconumber" disabled="disabled" class="i18n fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER"/>
+                                            <input type="text" size="6" maxlength="4" name="vcoext" id="vcoext"  class="i18n fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER_EXT" disabled="disabled"/>
+                                        </div>
+                                        <div class="cb" style="text-align:center;">
+                                            <div id="c_ext_invalid" class="cb fr dn"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chatSectionHead" class="cb bottom">
+                                <div id="chatSectionTitle" class="fl"><div class="fl"><span class="i18n" data-i18n_key="COMMON_CHAT">Chat</span></div><div id="terpChat_head_VIID" class="fr"></div></div>
+                                <div id="chatMenu" class="fr bottom"><div id="chatMenuGear"></div></div>
+                                <div id="chatSettings" class="fr">
+                                    <div id="chatSettings_menu" class="dn">
+                                        <div id="chat_transcripts" class="chatSettings_item i18n dn" data-i18n_key="VIEW_CHAT_TRANSCRIPTS">Chat Transcripts</div>
+                                        <div id="chat_largeText" class="chatSettings_item first_csItem i18n" data-i18n_key="GUI_INTERPRETERCHAT_LARGETEXT">Large text</div>
+                                        <div id="chat_saveChat" class="chatSettings_item i18n" data-i18n_key="GUI_INTERPRETERCHAT_SAVETEXT">Save</div>
+                                        <div id="chat_printChat" class="chatSettings_item i18n" data-i18n_key="GUI_INTERPRETERCHAT_PRINTTEXT">Print</div>
+                                        <div id="chat_clearChat" class="chatSettings_item last_csItem i18n" data-i18n_key="GUI_INTERPRETERCHAT_CLEARTEXT">Clear</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chatViewer" class="dn">
+                                <div id="tc_Inner">
+                                    <div id="terpChat_content">
+                                        <div id="terpChat_innerBorder">
+                                            <div id="terpChat_wrap"></div>
+                                            <div id="chat_messaging" class="dn"></div>
+                                        </div>
+                                    </div>
+                                    <div id="terpChat_entry">
+                                        <div id="terpChatEntry_innerBorder">
+                                            <div id="terpChatInput_outer" class="fl">
+                                                <input type="text" id="terpChatEntry" disabled="disabled" />
+                                            </div>
+                                            <div id="terpChat_send" class="terpChatDisabled fr">
+                                                <div id="chatSend" data-i18n_key="GUI_PRIMARY_TERPCHAT_SEND" class="chatSend i18n">send</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cb"></div>
+                    </div>
+                    <object type="application/x-qt-plugin" classid="VideoConferenceWidget" name="MyVideoConferenceWidget" id="MyVideoConferenceWidget" class="dn"></object>
+                </div>
+                <div id="mainContent" class="fl dn">
+                    <div id="mainContacts" class="box dn">
+                        <div id="alphas">
+                            <div id="newContact_btnBox" class="fl _btnBox">
+                                <div id="newContact_btn" class="_btn" onClick="popAddContact();"><div id="newContactIcon" class="fl"></div><span class="i18n" data-i18n_key="GUI_NEW_CONTACT_TITLE"></span></div>
+                            </div>
+                            <div id="alphaContacts" class="fl">
+                                <div id="contactBuckets">
+                                    <div id="all_contacts" class="bucketBlock contactBucketSelected i18n fl first" data-i18n_key="GUI_HISTORY_BUCKET_ALL">All</div>
+                                    <div id="fav_contacts" class="bucketBlock i18n fl" data-i18n_key="GUI_CALL_FAVORITES">Favorites</div>
+                                </div>
+                            </div>
+                            <div id="sortSwitch" class="fr">
+                                <span id="sortLabel" class="i18n" data-i18n_key="GUI_SORT_MENU_TITLE">Sort</span> <select id="contactSortSelect"><option value="0" class="i18n" data-i18n_key="GUI_PI_FNAME">First name</option><option value="1" class="i18n" data-i18n_key="GUI_PI_LNAME">Last name</option></select>
+                            </div>
+                        </div>
+                        <div id="contactRecordEditMenu" class="recordEditMenuBox dn" data-contactRecordEditMenu="">
+                            <div class="recordEditMenu fr">
+                                <div class="recordEditMenuWrapper fr">
+                                    <div id="rem_contact_luNumber" data-editMenu="" data-lookupnumber="" class="recordEditButton recordEditButton_redux fr"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="contacts_bucket">
+                            <div id="contacts">Loading contact list.</div>
+                            <div id="favoritesList" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div id="mainHistory" class="box dn">
+                        <div id="historyRecordEditMenu" class="recordEditMenuBox dn" data-historyRecordEditMenu="">
+                            <div class="recordEditMenu fr">
+                                <div class="recordEditMenuWrapper fr">
+                                    <div id="rem_history_luNumber" data-editMenu="" data-lookupnumber="" class="recordEditButton recordEditButton_redux fr"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="historyBuckets">
+                            <div id="all_calls" class="bucketBlock historyBucketSelected i18n fl first" data-i18n_key="GUI_HISTORY_BUCKET_ALL">All</div>
+                            <div id="missed_calls" class="bucketBlock i18n fl" data-i18n_key="GUI_HISTORY_BUCKET_MISSED">Missed</div>
+                            <div id="clearHistoryBtn" class="fr _btnBox"><div class="i18n _btn" data-i18n_key="GUI_HISTORY_CLEAR_HISTORY"></div></div>
+                        </div>
+                        <div id="historyList">
+                            <div id="history_all_calls" class="innerbox">
+                            </div>
+                            <div id="history_missed_calls" class="innerbox dn">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mainPurpleMail" class="box dn">
+                        <div id="purpleMail">
+                            <div id="pmThumbMask" class="dn">
+                                <div id="tmbPlayControl" class="pmPlayControl_tmbMask"><img src="img/pmPlayIcon.png" width="34" height="34" /></div>
+                                <div id="pmThumbMask_tmb"></div>
+                            </div>
+                            <div id="pmHeader">
+                                <div id="pmViewGreetingBtn" class="fl _btnBox"><div class="i18n _btn" data-i18n_key="GUI_PM_BUTTON_VIEW">View greeting</div></div>
+                                <div id="pmChangeGreetingBtn" class="fl _btnBox"><div class="i18n _btn" data-i18n_key="GUI_PM_BUTTON_CHANGE">Change greeting</div></div>
+                                <div id="pmResetGreetingBtn" class="fl _btnBox"><div class="i18n _btn" data-i18n_key="GUI_PM_BUTTON_RESET">Reset greeting</div></div>
+                                <div id="pmDeleteAllBtn" class="fl _btnBox"><div class="i18n _btn" data-i18n_key="GUI_PM_BUTTON_DELETEALL">Clear all messages</div></div><!--PNG-430 KTRUMBLE 09142012; PNG-99 KTRUMBLE 07242012-->
+                                <div id="pmSort" class="fr"><span class="i18n" data-i18n_key="GUI_SORT_MENU_TITLE">Sort</span> <select name="pmSortSelect" id="pmSortSelect"><option value="FirstName" class="i18n" data-i18n_key="GUI_PI_FNAME">First name</option><option value="LastName" class="i18n" data-i18n_key="GUI_PI_LNAME">Last name</option></select></div>
+                            </div>
+                            <div id="purpleMailMessages"><div id="noMsg"><span class="noMsgInner i18n" data-i18n_key="GUI_PM_NOMESSAGES">No messages.</span></div></div>
+                        </div>
+                    </div>
+                    <div id="mainSettings" class="box dn">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width: 550px; height: 100%;">
+                            <tr>
+                                <td style="vertical-align: top; border-right: 1px solid #fff; width: 220px; min-width: 200px; background:url(../img/settings_tabs_bg.png) 27px -40px no-repeat;">
+                                    <div id="profileMenu" class="settingsSubMenu">
+                                        <div id="profileMenuVideo" class="settingsSubMenuItem settingsSubMenuItemSelected i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_VIDEO" data-myContent="deviceVideo">Video</div>
+                                        <div id="profileMenuAudio" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_AUDIO" data-myContent="deviceAudio">Audio</div>
+                                        <div id="profileMenuCallSetting" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_CALLSETTINGS" data-myContent="profileCallSettings">Call Settings</div>
+                                        <div id="profileMenuVoiceGreeting" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_VOICE_GREETING" data-myContent="profileVoiceGreeting">Voice Greeting</div>
+                                        <div id="profileMenuE911" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_E911" data-myContent="profileE911">Name & E911</div>
+                                        <div id="profileMenuEmailPassword" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_EMAIL_PASSWORD" data-myContent="profileEmailPassword">Email & Password</div>
+                                        <div id="profileMenuEmail" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_EMAIL_NOTIFICATIONS" data-myContent="profileEmail">Email Notifications</div>
+                                        <div id="profileMenuAvatarColor" class="settingsSubMenuItem i18n" data-i18n_key="GUI_DESKTOP_PROFILE_MENU_AVATAR_COLOR" data-myContent="profileAvatarColor">Avatar Color</div>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: top; background-color: #f1f1f1; min-width: 545px;">
+                                    <div id="profileContent" class="settingsSubContent">
+                                        <div id="deviceVideo" class="settingsSubContentItem dn">
+                                            <div id="settingsPreview"></div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_VIDEO_FLASHER"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="flasherDevice"></select>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_GENERAL_AUTOANSWER_LABEL"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="autoanswer_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_GENERAL_ALWAYS_ON_TOP_DURING_CALL"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="ontoponcall_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_GENERAL_MUTE_VIDEO_ON_MINIMIZE"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="mutevideoonmin_toggle" class="settings_toggle controlItem fl"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_GENERAL_MINIMIZE_ON_LOGON"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="minonlogon_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_SETUP_BC_CAMERA"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="videoCaptureDevice"></select>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_VIDEO_INPUT_FORMAT_LABEL"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="videoCaptureDeviceFormat"></select>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <div id="open_webcam_driver_settings" class="i18n fr" data-i18n_key="GUI_CFG_VIDEO_INPUT_CUSTOM_LABEL">Open driver settings...</div>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="video_location"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <div id="blockedCallersButton" class="settingsMenuBlocked i18n fr" data-i18n_key="GUI_WIZARD_VIEW_BLOCKED_CALLERS"></div>
+                                                </div>
+                                                <div class="cellItemR">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="profileCallSettings" class="settingsSubContentItem dn">
+                                            <div class="cb rowItem" style="margin-top: 10px;">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_SETTINGS_CALL_VILANG"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div  class="settings_toggle controlItem fl" id="terplang_settings_toggle"></div>
+                                                </div>
+                                            </div>
+                                            <!-- dave  uncomment this if need to work with Spanish or English without logging out
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_LANGUAGE"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="language"></select>
+                                                </div>
+                                            </div>
+                                            -->
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" id="relayAnnounce" data-i18n_key="GUI_SETTINGS_CALL_ANNOUNCE_VRS"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="announcevrs_global_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_CALLING_VCO"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="vcotype_toggle_global" class="controlItem fl">
+                                                        <input type="radio" id="vcoradio0_global" name="vcotype_radio_global" value="0" /><label for="vcoradio0_global" class="first typeToggle i18n" data-i18n_key="GUI_VCO_OFF">Off</label>
+                                                        <input type="radio" id="vcoradio1_global" name="vcotype_radio_global" value="1" /><label for="vcoradio1_global" style="margin-left: -17px;" class="typeToggle i18n" data-i18n_key="GUI_VCO_ONELINE">One-line VCO</label>
+                                                        <input type="radio" id="vcoradio2_global" name="vcotype_radio_global" value="2" /><label for="vcoradio2_global"  style="margin-left: -17px;" class="typeToggle i18n" data-i18n_key="GUI_VCO_TWOLINE">Two-line VCO</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem" style="margin: 0px;">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input type="text" name="vconumber_global" id="vconumber_global" disabled="disabled" class="i18n fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER"/>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER_EXT"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input type="text" size="6" maxlength="4" name="vcoext_global" id="vcoext_global"  class="i18n fl" data-i18n_key="GUI_CFG_CALLING_VCO_NUMBER_EXT" disabled="disabled"/>
+                                                </div>
+                                            </div>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div class="cb fl settingsSave" id="saveCallSettings">
+                                                        <div class="saved settingsSaveInner fl i18n" data-i18n_key="GUI_SAVED_TRANSCRIPT"></div>
+                                                        <div class="save settingsSaveInner fl i18n" data-i18n_key="COMMON_SAVE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="c_ext_invalid_global" class="cb dn"></div>
+                                        </div>
+                                        <div id="deviceAudio" class="settingsSubContentItem dn">
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_VIDEO_RINGER"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="audioNotificationPlaybackDevice"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_AUDIO_DEVICE_SPEAKER_VOLUME"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input class="audio_level controlItem bfoItemSlider fl" id="speakers_level" type="range" min="0" max="32768" />
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fl" data-i18n_key="GUI_CFG_AUDIO_DEVICE_MIC_VOLUME"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input class="audio_level controlItem bfoItemSlider fl" id="microphone_level" type="range" min="0" max="32768" />
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fr" data-i18n_key="GUI_CFG_AUDIO_AEC_TOOLTIP"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="aec_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fr" data-i18n_key="GUI_CFG_AUDIO_MICROPHONE"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="micDevice"></select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n settingLabels fr" data-i18n_key="GUI_CFG_AUDIO_SPEAKERS"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <select class="controlItem fl" id="speakerDevice"></select>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div id="profileEmailPassword" class="settingsSubContentItem dn">
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n fr" data-i18n_key="GUI_SETTINGS_EMAIL_ADDRESS"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input type="text" name="ep_email" id="ep_email" class="fl" maxlength="50"/>
+                                                </div>
+                                            </div>
+
+                                                    <label class="i18n cb fl" data-i18n_key="GUI_SETTINGS_PASSWORD_INTRO"></label>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n cb fr" data-i18n_key="GUI_SETTINGS_NEW_PASSWORD"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input type="password" name="ep_password_new" id="ep_password_new" class="fl" maxlength="50"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n cb fr" data-i18n_key="GUI_SETTINGS_CONFIRM_PASSWORD"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input type="password" name="ep_password_confirm" id="ep_password_confirm" class="fl" maxlength="50"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div class="cb fl settingsSave" id="saveEmailPassword">
+                                                        <div class="saved settingsSaveInner fl i18n" data-i18n_key="GUI_SAVED_TRANSCRIPT"></div>
+                                                        <div class="save settingsSaveInner fl i18n" data-i18n_key="COMMON_SAVE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cb" style="text-align: center;">
+                                                <div id="pi_email_invalid"></div>
+                                                <div id="pi_pword_invalid"></div>
+                                            </div>
+                                        </div>
+                                        <div id="profileAvatarColor" class="settingsSubContentItem dn">
+                                            <div id="profileAvatarWrapperWrapper" class="fl">
+                                                <div id="profileAvatarWrapper" class="fl">
+                                                    <div id="profileAvatarImageDiv"><img src="img/spacer.gif" id="settings_profile_avatar" border="0" /></div>
+                                                </div>
+                                                <div class="cb fl settingsSave" id="changeAvatar"><div id="changeAvatarButton" class="settingsSaveInner  i18n" data-i18n_key="GUI_PI_CHANGE_AVATAR"></div></div>
+                                                <div class="minusSignAvatar fl"></div>
+                                            </div>
+                                            <div id="profileColorChoiceWrapper" class="fr">
+                                                <div id="profileColorRed" data-code="#F5473A" class="profileColorChoice fl"></div>
+                                                <div id="profileColorOrange" data-code="#FC912C" class="profileColorChoice fl"></div>
+                                                <div id="profileColorYellow" data-code="#F5D93A" class="profileColorChoice fl"></div>
+                                                <div id="profileColorGreen" data-code="#20BA1D" class="profileColorChoice cb fl"></div>
+                                                <div id="profileColorBlue" data-code="#6A84AF" class="profileColorChoice fl"></div>
+                                                <div id="profileColorPurple" data-code="#51246D" class="profileColorChoice fl"></div>
+                                                <div id="profileColorNone" data-code="#none" class="profileColorChoice cb fr"><img src="img/remove_pcolor.png" border="0" alt="Remove" style="margin-top: 5px;"/></div>
+                                            </div>
+                                        </div>
+                                        <div id="profileE911" class="settingsSubContentItem dn">
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_FNAME"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_fname_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_LNAME"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_lname_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_ADDRESS"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_address_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_ADDRESS2">Address:</label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_address2_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_CITY">City:</label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_city_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_STATE">State</label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_state_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n" data-i18n_key="GUI_E911_ZIP" style="margin-bottom: 15px;">Zip</label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="fl staticData" id="e911_zip_static"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div class="cb fl settingsSave" id="editE911"><div class="settingsSaveInner i18n" data-i18n_key="COMMON_EDIT"></div></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div id="profileEmail" class="settingsSubContentItem dn">
+                                            <!--div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label id="profileUserEmailNotifications" class="i18n fr" data-i18n_key="GUI_EMAIL_NOTIFICATIONS_USE"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="useemailnotifications_toggle" class="settings_toggle controlItem fl"></div>
+                                                </div>
+                                            </div>
+
+                                            <label id="profileEmailUseProfileLabel" style="margin: 0 0 0 22px;" class="i18n fl" data-i18n_key="GUI_EMAIL_NOTIFICATIONS_USE_PROFILE_LABEL"></label>
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <div class="cb fr"><span id="profileEmailCurrent"></span></div>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div id="emailNotificationsCheckbox" class="fl"><input type="checkbox" value="1" name="emailNotificationsUseProfile" id="emailNotificationsUseProfile"/> <span class="i18n" data-i18n_key="COMMON_YES">Yes</span></div>
+                                                </div>
+                                            </div-->
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n fr" data-i18n_key="GUI_EMAIL_NOTIFICATIONS_PM_LABEL"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input class="fl" type="text" name="vmNotificationEmail" id="vmNotificationEmail" maxlength="55"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n cb fr" data-i18n_key="GUI_EMAIL_NOTIFICATIONS_INCOMING_CALL_LABEL"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <input class="fl" type="text" name="icNotificationEmail" id="icNotificationEmail" maxlength="55"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div class="cb fl settingsSave" id="saveEmailNotification">
+                                                        <div class="saved settingsSaveInner fl i18n" data-i18n_key="GUI_SAVED_TRANSCRIPT"></div>
+                                                        <div class="save settingsSaveInner fl i18n" data-i18n_key="COMMON_SAVE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cb" style="text-align: center;">
+                                                <div id="pe_email_invalid"></div>
+                                            </div>
+                                        </div>
+                                        <div id="profileVoiceGreeting" class="settingsSubContentItem dn">
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <label class="i18n fr" data-i18n_key="GUI_VOICE_GREETING"></label>
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <textarea class="cb" name="pvg_voice_greeting" id="pvg_voice_greeting" maxlength="240"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                    <input type="checkbox" class="fr" style="margin: 7px 0 0 11px !important;" name="pvg_voice_greeting_default" id="pvg_voice_greeting_default" />
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <label class="i18n fl" style="padding: 3px 0 0 3px;" data-i18n_key="GUI_VOICE_GREETING_DEFAULT"></label>
+                                                </div>
+                                            </div>
+
+                                            <div class="cb rowItem">
+                                                <div class="cellItemL">
+                                                </div>
+                                                <div class="cellItemR">
+                                                    <div class="cb fl settingsSave" id="savePVG">
+                                                        <div class="saved settingsSaveInner fl i18n" data-i18n_key="GUI_SAVED_TRANSCRIPT"></div>
+                                                        <div class="save settingsSaveInner fl i18n" data-i18n_key="COMMON_SAVE"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="p3_logo"></div>
+                <div id="kiosk_p3_logo" style="display: none;"></div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer_status" class="dn fl">
+                <div id="status_chks">
+                    <div id="statusChk_1" class="status_chk fl"></div>
+                    <div id="statusChk_2" class="status_chk fl"></div>
+                </div>
+            </div>
+            <div id="networkStatus" class="status_offline fl"></div>
+            <div id="footer_user" class="fr">
+                <div id="footer_user_number" class="fr"></div>
+                <div id="footer_user_name" class="fr"></div>
+                <div id="footerWrapper" class="fr">
+                    <div id="footer_thumb" class="fl"><img src="img/spacer.gif" width="21" height="21" border="0" id="footer_avatar"/></div>
+                </div>
+            </div>
+        </div>
+        <div id="loadingAnim" class="dn"><img src="img/loading.gif" border="0" width="22" height="22" alt="Loading..."/></div>
+    <iframe id="printFrame" class="dn" src="chatview.html"></iframe>
+    <script id="activeCallMimizedTemplate" type="text/x-jquery-tmpl">
+        <div id="minfo${lineNum}" data-lineNum="${lineNum}" class="fl dn callMinizedInfoBlock">
+            <div class="minimizedCallDisplayName"></div>
+            <div class="minimizedCallStatus monospaced"></div>
+        </div>
+    </script>
+    <span id="textRuler" class="dn"></span>
+    </body>
+</html>

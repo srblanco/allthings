@@ -1,0 +1,46 @@
+/* 
+    Document   : setup
+    Created on : Apr 4, 2012, 4:02:56 PM
+    Author     : wesblake
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#setup_bar { width: 100%; background-color: #FFF; height: 49px; padding-bottom: 1px; }
+#setup_bottom_bar { width: 984px; padding: 20px; }
+div.setup_label { font-size: 1.5em; color: #898989; line-height: 49px; padding-left: 25px; }
+.setup_button { float: right; width: 168px; height: 49px; background-color: #898989; color: #FFF; margin-left: 1px; line-height: 49px; font-size: 1.3em; text-align: center; }
+.setup_button_selected { background-color: #6a84af; }
+#setup_pointer { position: relative; left: 53px; }
+#setup_page_label { font-size: 1.5em; color: #292323; padding-left: 25px; padding-top: 35px; width: 485px; }
+#setup_container { height: 245px; width: 974px; padding: 25px; margin-top: 25px; }
+#setup_left { text-align:center; width: 430px; float: left; }
+.setup_button_left { float: left }
+.setup_button_right { float: right }
+#button_back, #button_next { text-align: center; color: #ffffff; height: 25px; padding: 10px; border: 1px solid #FFF; border-radius: 5px;
+           background-color: #898989; font-size: 1.2em; cursor:pointer; }
+#button_back:hover, #button_back:active, #button_next:hover, #button_next:active { box-shadow: 1px 1px 0px #a7a5a5;
+           background: -webkit-gradient(linear, left bottom, left top, color-stop(0%,#5b7196), color-stop(100%,#6a84af)); }
+.lt_long { width:100%; }
+
+/*Network1*/
+#button_eth, #button_wifi { text-align: center; color: #ffffff; width: 155px; height: 25px; padding: 10px; border: 1px solid #FFF; border-radius: 5px;
+           background-color: #898989; margin: 20px auto 20px auto; font-size: 1.2em; cursor:pointer; }
+#button_eth:hover, #button_wifi:hover, #button_eth:active, #button_wifi:active { box-shadow: 1px 1px 0px #a7a5a5;
+           background: -webkit-gradient(linear, left bottom, left top, color-stop(0%,#5b7196), color-stop(100%,#6a84af)); }
+
+/*Wifi*/
+
+#setup select, #setup input {
+    width: 444px;
+    height: 44px;
+    padding: 10px;
+    margin-bottom: 25px;
+    /*background: -webkit-gradient(linear, left top, left bottom, from(#bcbcbe), to(#ffffff));
+    -webkit-box-shadow: -1px -1px 0px #efefef;*/
+}

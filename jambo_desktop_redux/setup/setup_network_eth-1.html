@@ -1,0 +1,89 @@
+<hr class="lt" />
+<div id="setup_bar">
+    <div class="label cell i18n setup_label" data-i18n_key="GUI_CFG_SETUP_SETUP_LABEL">Setup</div>
+    <div id="setup_button_account" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_ACCOUNT">Account</div>
+    <div id="setup_button_camera" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_CAMERA">Camera</div>
+    <div id="setup_button_network" class="setup_button setup_button_selected" data-i18n_key="GUI_CFG_SETUP_BC_NETWORK">Network</div>
+</div>
+<hr class="lt" />
+<img id="setup_pointer" src="img/setup_pointer.gif"/>
+<div id="setup_page_label" class="label cell i18n" data-i18n_key="GUI_CFG_SETUP_WIFI_CONNECT">Connect to:</div>
+<div id="setup_container">
+    <div id="setup_left">
+        
+    </div>
+    <div class="fr">
+        <div id="walkthru_video"></div>
+        <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_VIDWALK_LABEL">Video walkthrough</div>
+        <div class="f1" id="walkthru_toggle">
+            <div class="iphone_switch_container">
+                <img class="iphone_switch" src="img/iphone_switch_container_off.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="lt" />
+<div id="setup_bottom_bar">
+    <div id="button_back" class="setup_button_left setup_action" style="width: 100px; height: 45px; background-color: #898989;">Back</div>
+</div>
+<script>
+    $('#setup').find('.setup_button').removeClass('setup_button_selected');
+    $('#setup_button_network').addClass('setup_button_selected');
+    $('#setup_pointer').css('left','53px');
+    drawVideoSwitch();
+    $('#button_back').click(function(){
+        $.get('setup/setup_network-1.html', function(data){
+            $('#setup').find('.setup_action').unbind('click');
+            $('#setup').html(data);
+        });
+    })
+    
+    wifiInitiated = function(wifiResult){
+        if(wifiResult.Success)
+            $.get('setup/setup_network-2.html', function(data){
+                $('#setup').find('.setup_action').unbind('click');
+                $('#setup').html(data);
+            });
+        else
+            openMessagePopup('#errorPop',wifiResult.ErrorCode,wifiResult.ErrorMessage);
+    }
+    
+    fillWifiSelect = function(wifiData){
+        if(wifiData != null && wifiData.Success && wifiData.WifiNetworks.length>0){
+            var selectSSID = '<select id="wifi_select" name="wifi_select">';
+            var secPass = " disabled";
+            $.each(wifiData.WifiNetworks, function(key, value){
+                if(wifiData.WifiNetworks[key].NetworkConnectable){
+                    selectSSID += '<option value="'+wifiData.WifiNetworks[key].SSID+'_'+wifiData.WifiNetworks[key].SecurityEnabled+'"';
+                    if(key==0){
+                        selectSSID += ' selected';
+                        if(wifiData.WifiNetworks[key].SecurityEnabled)
+                            secPass = "";
+                    }
+                    selectSSID += '>'+wifiData.WifiNetworks[key].SSID+'</option>';
+                }
+            });
+            selectSSID += '</select>';
+            $('#setup_left').html(_i18n_.getHTML("GUI_CFG_SETUP_SSID")+"<br/>"+selectSSID+"<br/>"+_i18n_.getHTML("GUI_CFG_SETUP_WIFI_PASS")+"<br/><input type='password' id='wifi_pass' name='wifi_pass'"+secPass+"/>");
+            $('#setup_left').css('text-align','left');
+            
+            $('#wifi_select').change(function(){
+                var vals = $("#wifi_select option:selected").val().split('_');
+                if(vals[1]=="true" || vals[1]==true)
+                    $('#wifi_pass').removeAttr('disabled');
+                else
+                    $('#wifi_pass').val('').attr('disabled','disabled');
+            });
+            
+            $('#setup_bottom_bar').append('<div id="button_next" class="setup_button_right setup_action" style="width: 100px; height: 45px; background-color: #898989;">Next</div>');
+            $('#button_next').click(function(){
+                var vals = $("#wifi_select option:selected").val().split('_');
+                JAMBO_APP.DeviceWebServices.runAPI('set_wifi_access','{"SSID":"'+vals[0]+'", "passPhrase":"'+$('#wifi_pass').val()+'"}',wifiInitiated)
+            });
+        } else {
+            $('#setup_page_label').html(_i18n_.getHTML("GUI_CFG_SETUP_WIFI_NOTFOUND"));
+        }
+    }
+    
+    JAMBO_APP.DeviceWebServices.runAPI('get_wifi_networks','{}',fillWifiSelect);
+</script>

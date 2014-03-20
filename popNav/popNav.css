@@ -1,0 +1,154 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, html {
+    height:100%;
+    overflow:hidden;
+}
+body {
+    margin:0;
+    padding:0;
+    font-family:verdana,helvetica,sans-serif;
+    font-size:10px;
+}
+.cb { clear:both; }
+.dn { display:none; }
+#mainBody {
+    height:100%;
+}
+#lCol {
+    float:left;
+    width:180px;
+    padding:1px 0;
+    height:100%;
+    background-color:#999;
+    border-right:1px solid #333;
+}
+#rCol {
+    float:right;
+    width:200px;
+    height:100%;
+    padding:1px 0;
+    background-color:#999;
+    border-left:1px solid #333;
+}
+#mCol {
+    padding:1px 200px 1px 180px;
+    margin:0;
+}
+#mCol_content {
+    position:relative;
+    width:100%;
+    height:100%;
+}
+#itsLatin {
+    padding:10px 20px;
+}
+.navToggle {
+    float:left;
+    width:70px;
+    font-size:1.1em;
+    padding:2px 5px 3px 5px;
+    border:1px solid #333;
+    border-radius:3px;
+    cursor:pointer;
+    text-align:center;
+    background-color:silver;
+}
+.navToggle:hover {
+    background-color:#fff;
+}
+.navToggle:active {
+    background-color:#ff0000;
+}
+#navDiv {
+    position:absolute;
+    top:-2px;
+    left:1px;
+    width:125px;
+    margin:0;
+}
+#mainNavWrapper {
+    position:relative;
+    z-index:10;
+    background-color:#fff;
+    margin:5px 0 0 5px;
+}
+.mainItem {
+    margin-bottom:3px;
+    padding:2px 5px;
+    font-size:1.2em;
+    text-align:center;
+    border:1px solid #999;
+    cursor:pointer;
+    z-index:10;
+    background-color:#fff;
+}
+div.mainItem:hover {
+    border:1px solid #666;
+    color:#fff;
+    background-color:#666;
+}
+#mainSubNavWrapper {
+    position:absolute;
+    top:5px;
+    background-color:#fff;
+    z-index:0;
+}
+.subNavWrapper {
+    position:absolute;
+    top:0;
+    left:0;
+    margin:0 0 0 130px;
+    min-width:75px;
+    background-color:#fff;
+    z-index:0;
+}
+.subItem {
+    margin:0 0 2px 0;
+    border:1px solid #666;
+    cursor:pointer;
+    background-color:#fff;
+    text-align:center;
+    z-index:0;
+}
+div.subItem:hover {
+    border:1px solid #666;
+    color:#fff;
+    background-color:#666;
+}
+
+/* anitmate subnav items */
+div.animateOut {
+    animation:moveSubNav .5s;
+    -webkit-animation:moveSubNav .5s; /* Safari and Chrome */
+}
+@keyframes moveSubNav {
+    0%   {margin-left:70px;}
+    100%  {margin-left:125px;}
+}
+@-webkit-keyframes moveSubNav {/* Safari and Chrome */
+    0%   {margin-left:70px;}
+    100%  {margin-left:125px;}
+}
+
+/* responsive tweaks */
+@media screen and (min-width:360px){
+
+}
+
+@media screen and (min-width:420px){
+
+}
+
+@media screen and (min-width:480px){
+
+}
+
+@media screen and (min-width:540px){
+
+}
+
+@media screen and (min-width:640px){
+
+}

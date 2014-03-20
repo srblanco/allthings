@@ -1,0 +1,74 @@
+<hr class="lt" />
+<div id="setup_bar">
+    <div class="label cell i18n setup_label" data-i18n_key="GUI_CFG_SETUP_SETUP_LABEL">Setup</div>
+    <div id="setup_button_account" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_ACCOUNT">Account</div>
+    <div id="setup_button_camera" class="setup_button" data-i18n_key="GUI_CFG_SETUP_BC_CAMERA">Camera</div>
+    <div id="setup_button_network" class="setup_button setup_button_selected" data-i18n_key="GUI_CFG_SETUP_BC_NETWORK">Network</div>
+</div>
+<hr class="lt" />
+<img id="setup_pointer" src="img/setup_pointer.gif"/>
+<div id="setup_page_label" class="label cell i18n" data-i18n_key="GUI_CFG_SETUP_NETWORK_LABEL">Choose your connection type:</div>
+<div id="setup_container">
+    <div id="setup_left">
+        <div id="button_eth" class="setup_action" style="width: 150px; height: 50px; margin: 20px auto 20px auto; background-color: #6a84af;">Ethernet</div>
+        <hr class="lt" />
+        Or
+        <hr class="lt" />
+        <div id="button_wifi" class="setup_action" style="width: 150px; height: 50px; margin: 20px auto 20px auto; background-color: #6a84af;">WiFi</div>
+    </div>
+    <div class="fr">
+        <div id="walkthru_video"></div>
+        <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_VIDWALK_LABEL">Video walkthrough</div>
+        <div class="f1" id="walkthru_toggle">
+            <div class="iphone_switch_container">
+                <img class="iphone_switch" src="img/iphone_switch_container_off.png"/>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="lt" />
+<div id="setup_bottom_bar">
+    
+</div>
+<script>
+    $('#setup').find('.setup_button').removeClass('setup_button_selected');
+    $('#setup_button_camera').addClass('setup_button_selected');
+    $('#setup_pointer').css('left','222px');
+    drawVideoSwitch();
+    
+    //We have network setup, register device with MCS so we can show local video
+    console.log("Registering with MCS");
+    var loginServer = undefined;
+    if (isServerRequired) {
+      loginServer = $('#signin #loginServer').val();
+    }
+    __thisWindowProxy__.performAuthentication(JAMBO_APP.DeviceConfig.DeviceUser, JAMBO_APP.DeviceConfig.DevicePassword, loginServer, undefined, sAuthType, function(response) {
+        var errorString = Event.authenticationNotification.genericError;
+        console.log("Tried authenticating, error: "+response.result.error);
+        switch (response.result.error) {
+            case "WrongParameter":                                    
+                if (isDefined(response.result.paramName)) {
+                    switch (response.result.paramName) {
+                        case "username": errorString = Event.authenticationNotification.wrongUsernameParameter; break;
+                        case "password": errorString = Event.authenticationNotification.wrongPasswordParameter; break;
+                        case "authType": errorString = Event.authenticationNotification.wrongAuthTypeParameter; break; 
+                        case "server": errorString   = Event.authenticationNotification.wrongServerParameter; break; 
+                        default: break;
+                    }
+                } break;  
+            case "MissingParameter":                                    
+                if (isDefined(response.result.paramName)) {
+                    switch (response.result.paramName) {
+                        case "username": errorString = Event.authenticationNotification.missingUsernameParameter; break;
+                        case "password": errorString = Event.authenticationNotification.missingPasswordParameter; break;
+                        case "authType": errorString = Event.authenticationNotification.missingAuthTypeParameter; break; 
+                        case "server": errorString   = Event.authenticationNotification.missingServerParameter; break; 
+                        default: break;
+                    }
+                } break;
+            default: break;
+        }
+        //serverAuthorizationRequest(errorString, sAuthType, requiredServer);   
+    });
+    firstAuth = false;
+</script>

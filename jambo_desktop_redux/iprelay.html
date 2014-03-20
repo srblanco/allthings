@@ -1,0 +1,67 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IP Relay</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        
+        <script type="text/javascript" src="js-common/lib/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.json-2.2.js"></script>
+        
+        <script type="text/javascript" src="js-common/classes/WindowsRepository.js"></script>
+        <script type="text/javascript" src="js-common/classes/__ThisWindowProxy__.js"></script>
+        
+        <script type="text/javascript" src="js-common/utils.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {  
+                windowsRepository = opener.windowsRepository; 
+                var parentWindowData = windowsRepository.getParameters(window.name);
+                
+                __thisWindow__.ready();
+                __thisWindow__.setIcon("img/icon.ico");
+                __thisWindow__.setMinimumSize(640, 480);   
+                __thisWindow__.show();
+                $(window).resize();
+                
+                if (isDefined(parentWindowData.action)) { $('#_tmpForm').attr('action',parentWindowData.action); } else window.close();
+                if (isDefined(parentWindowData.dialnumber)) { $('#theNumber').val(parentWindowData.dialnumber); } else window.close();
+                if (isDefined(parentWindowData.specialinstructions)) { $('#theInstructions').val(parentWindowData.specialinstructions); }
+                if (isDefined(parentWindowData.vilang)) { $('#relayLang').val(parentWindowData.vilang); }
+                if (isDefined(parentWindowData.currentguid)) { $('#myGUID').val(parentWindowData.currentguid); }
+                //$('#_tmpForm').submit();
+            });
+            
+            $(window).unload(function(event) { onUnload(); });
+            
+            function onUnload(){
+                windowsRepository.onUnload(window.name, undefined);
+            }
+        </script>
+    </head>
+    <body>
+        <div style="display:none;">
+            <form id="_tmpForm" action="" method="POST">
+                <input type="hidden" name="theNumber" id="theNumber" value="" />
+                <input type="hidden" name="theInstructions" id="theInstructions" value="" />
+                <input type="hidden" name="relayLang" id="relayLang" value="" />
+                <input type="hidden" name="myGUID" id="myGUID" value="" />
+                <input type="hidden" name="opGen" value="a" />
+                <input type="hidden" name="imTTY" value="1" />
+                <input type="hidden" name="myID" value="-1" />
+                <input type="hidden" name="myDeviceID" value="-1" />
+                <!-- Not yet dynamically set, or does not need to be, tbd -->
+                <input type="hidden" name="vcoType" value="telephone" />
+                <input type="hidden" name="vcoNumber" value="9161331222" />
+                <input type="hidden" name="fromBook" value="32" />
+                <input type="hidden" name="fromQuick" value="1" />
+                <input type="hidden" name="callType" value="-1" />
+                <input type="hidden" name="VsMessageWindowId" value="1FE79C88-1033-4608-9296-4BA2A9E5506E" />
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+@charset "utf-8";
+/** CSS Document
+*	Author: Keith Trumble, 02/05/2014
+**/
+
+body {
+	font-size:10px;
+	font-family:verdana,tahoma,sans-serif;
+	color:#fff;
+	background-color:#333;
+}
+#begin {
+	text-align:center;
+}
+#messaging, #albumDisplay, #artistDisplay, #bandMembers {
+	display:none;
+}
+#messaging span {
+	font-weight:bold;
+}
+.albumTitle, .albumArtist {
+	font-weight:bold;
+}
+.trackItem span {
+	font-weight:bold;
+}

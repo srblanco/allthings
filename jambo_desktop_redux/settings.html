@@ -1,0 +1,691 @@
+<!--
+ * This source  code is  part of  the Mirial  MCS Client  Software Development  Kit
+ * (referred here as the "SDK"). SDK is licensed to you subject to the terms of the
+ * "Mirial  MCS  Client  SDK  License Agreement"  (referred  here  as  the "License
+ * Agreement"). The License Agreement forms a legally binding contract between  you
+ * and Mirial in relation to your use of the SDK.
+ * 
+ * BY USING THIS  SDK, YOU ARE  AGREEING TO BE  BOUND BY THE  TERMS OF THE  LICENSE
+ * AGREEMENT. IF YOU  DO NOT AGREE  TO THE TERMS  OF THE LICENSE  AGREEMENT, DO NOT
+ * INSTALL OR USE THE SDK.
+ * 
+ * This source code is provided "as is" and without warranties as to performance or
+ * merchantability. The  author and/or  distributors of  this source  code may have
+ * made statements about  this source code.  Any such statements  do not constitute
+ * warranties and shall  not be relied  on in deciding  whether to use  this source
+ * code. This  source code  is provided  without any  express or implied warranties
+ * whatsoever. No warranty of fitness for a particular purpose is offered. You  are
+ * advised to test the source code thoroughly before relying on it. You must assume
+ * the entire risk of using the source code.
+-->
+<!DOCTYPE html>
+<html>
+    <head>  
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        
+        <script type="text/javascript" src="js-common/lib/jquery-1.4.4.js"></script>
+        <script type="text/javascript" src="js-common/lib/jquery.json-2.2.js"></script>
+                
+        <!--<script type="text/javascript" src="js-common/classes/Entry.js"></script>
+        <script type="text/javascript" src="js-common/classes/EntrySeparator.js"></script>
+        <script type="text/javascript" src="js-common/classes/EntryMessage.js"></script>
+        <script type="text/javascript" src="js-common/classes/Contact.js"></script>    
+        <script type="text/javascript" src="js-common/classes/HistoryEntry.js"></script>-->
+        <script type="text/javascript" src="js-common/classes/Line.js"></script>
+        <script type="text/javascript" src="js-common/classes/LineRepository.js"></script>
+        <script type="text/javascript" src="js-common/classes/Command.js"></script>
+        <script type="text/javascript" src="js-common/classes/Response.js"></script>
+        <script type="text/javascript" src="js-common/classes/Event.js"></script>
+        <script type="text/javascript" src="js-common/classes/WindowsRepository.js"></script>
+        
+        <script type="text/javascript" src="js-common/classes/__CoreListener__.js"></script>
+        <script type="text/javascript" src="js-common/classes/__ThisWindowProxy__.js"></script>        
+        
+        <script type="text/javascript" src="js-common/classes/I18N.js"></script>
+        <script type="text/javascript" src="js-common/i18n/en_US.js"></script>
+        <script type="text/javascript" src="js-common/i18n/es_ES.js"></script>
+      
+        <script type="text/javascript" src="js-common/utils.js"></script>
+        <script type="text/javascript" src="js/settings-coreListener.js"></script>        
+        <script type="text/javascript" src="js/settings.js"></script>
+    
+        <link rel="stylesheet" type="text/css" href="css/common.css" />
+        <link rel="stylesheet" type="text/css" href="css/settings.css" />
+        <script>
+            populateVILangSelect=function(){
+                return;
+            }
+        </script>
+    </head>
+    <body>     
+        <div id="header">        
+            <div id="menu">
+                <div id="generalTab" tab="#general" class="tab i18n" data-i18n_key="GUI_CFG_TAB_TITLE_GENERAL">General</div>
+                <div id="audioTab" tab="#audio" class="tab i18n" data-i18n_key="GUI_CFG_TAB_TITLE_AUDIO">Audio</div>
+                <div id="videoTab" tab="#video" class="tab i18n" data-i18n_key="GUI_CFG_TAB_TITLE_VIDEO">Video</div>
+                <div id="codecsTab" tab="#codecs" class="tab i18n" data-i18n_key="GUI_CFG_TAB_TITLE_CODECS">Codecs</div>
+                <div id="networkAndProtocolsTab" tab="#networkAndProtocols" data-i18n_key="GUI_CFG_TAB_TITLE_NETWORK" class="tab i18n" style="display:none">Network &amp; Protocols</div>
+                <div id="sipTab" tab="#sip" class="tab disabled i18n" data-i18n_key="GUI_CFG_TAB_TITLE_SIP" style="display:none">SIP</div> 
+                <div id="h323Tab" tab="#h323" class="tab disabled i18n" data-i18n_key="GUI_CFG_TAB_TITLE_H323" style="display:none">H.323</div>             
+                <div id="aboutTab" tab="#about" class="tab" style="display:none"></div>
+            </div>
+            <div style="clear:both"></div>
+            
+            <div id="contentTop">
+                <div id="generalTop" class="tabContentTop"></div>
+                <div id="audioTop" class="tabContentTop"></div>
+                <div id="videoTop" class="tabContentTop"></div>
+                <div id="codecsTop" class="tabContentTop"></div>
+                <div id="networkAndProtocolsTop" class="tabContentTop"></div>
+                <div id="sipTop" class="tabContentTop"></div>  
+                <div id="h323Top" class="tabContentTop"></div>              
+                <div id="aboutTop" class="tabContentTop"></div>
+            </div>
+        </div>
+        
+        <div id="content">
+            <div id="savingMask" class="tabContent"></div>
+            
+            <div id="audio" class="tabContent">              
+                <fieldset>
+                    <legend class="i18n" data-i18n_key="GUI_CFG_AUDIO_MICROPHONE">Microphone</legend>
+                    <div class="device table">                
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_AUDIO_DEVICE">Device</div>
+                            <div class="content cell">
+                                <select class="device" id="micDevice"></select>
+                            </div>
+                        </div>                  
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_AUDIO_DEVICE_VOLUME">Volume</div>
+                            <div class="content cell">
+                                    <div class="progressBarWidget green" id="microphone_meter"><div class="progressBar"></div></div>
+                                    <input class="audio_level" id="microphone_level" type="range"  min="0" max="32768" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell i18n i18nTitle" data-i18nTitle_key="GUI_CFG_AUDIO_AEC_TOOLTIP" data-i18n_key="GUI_CFG_AUDIO_AEC_LABEL">AEC</div>
+                            <div class="content cell"><input class="i18nTitle" data-i18nTitle_key="GUI_CFG_AUDIO_AEC_TOOLTIP" type="checkbox" id="useAEC"/></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                
+                <fieldset>
+                    <legend class="i18n" data-i18n_key="GUI_CFG_AUDIO_SPEAKERS">Speakers</legend>
+                    <div class="device table">                
+		                <div class="row">
+		                    <div class="label cell i18n" data-i18n_key="GUI_CFG_AUDIO_DEVICE">Device</div>
+		                    <div class="content cell">
+		                        <select class="device" id="speakerDevice"></select>
+		                    </div>
+		                </div>                  
+		                <div class="row">
+		                    <div class="label cell i18n" data-i18n_key="GUI_CFG_AUDIO_DEVICE_VOLUME">Volume</div>
+		                    <div class="content cell">
+		                            <input class="audio_level" id="speakers_level" type="range"  min="0" max="32768" />&nbsp;<div class="button small i18n" data-i18n_key="GUI_CFG_AUDIO_TEST" id="test_speakers">&nbsp;Test&nbsp;</div>                                
+		                    </div>
+		                </div>
+		            </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend class="i18n" data-i18n_key="GUI_CFG_AUDIO_RINGING">Ringing</legend>
+                    <div class="device table">                
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_AUDIO_DEVICE">Device</div>
+                            <div class="content cell">
+                                <select class="device" id="audioNotificationPlaybackDevice"></select>
+                            </div>
+                        </div>                  
+                        <div class="row">
+                            <div class="label cell"></div>
+                            <div class="content cell">
+                                   <!--<input class="audio_level" id="notification_level" type="range"  min="0" max="32768" />&nbsp;--><div class="button small i18n" data-i18n_key="GUI_CFG_AUDIO_TEST" id="test_audio_notification">&nbsp;Test&nbsp;</div>                               
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>               
+            </div> <!-- audio -->
+            
+            <div id="video" class="tabContent">            
+                <fieldset>
+                    <legend class="i18n" data-i18n_key="GUI_CFG_VIDEO_WEBCAM">Webcam</legend>
+                    <div class="device table">                
+                        <div class="row">
+                            <div class="label device cell i18n" data-i18n_key="GUI_CFG_VIDEO_DEVICE">Device</div>
+                            <div class="content device cell">
+                                <select class="device" id="videoCaptureDevice"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="label device cell">&nbsp;</div>
+                            <div class="content device cell">
+                                <div class="button small i18n" data-i18n_key="GUI_CFG_VIDEO_INPUT_CUSTOM_LABEL" id="open_webcam_driver_settings">Open driver settings...</div>
+                                <div class="button small i18n" data-i18n_key="GUI_CFG_VIDEO_VIDEO_COMPOSER_LABEL" id="open_video_composer">Show local video</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="label device cell">&nbsp;</div>
+                            <div class="content device cell">&nbsp;</div>
+                        </div>
+                        <div class="row">
+                            <div class="label device cell i18n" data-i18n_key="GUI_CFG_VIDEO_INPUT_FORMAT_LABEL">Preferred format</div>
+                            <div class="content device cell">
+                                <select class="device" id="videoCaptureDeviceFormat"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="label device cell i18n" data-i18n_key="GUI_CFG_VIDEO_INPUT_FORMAT_CURRENT_LABEL">Current format</div>
+                            <div class="content device cell" id="currentVideoCaptureDeviceFormat">?</div>
+                        </div>
+                        <!-- div class="row">
+                            <div class="label device cell i18n" data-i18n_key="GUI_CFG_VIDEOADV_DENOISE_LABEL">Enable denoise</div>
+                            <div class="content device cell">
+                                <input type="checkbox" id="videoDenoise"/>
+                            </div>
+                        </div-->
+                    </div>
+                </fieldset>
+                
+                <fieldset id="flasherFieldset" class="hidden">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_VIDEO_FLASHER">Flasher</legend>
+                    <div class="device table">                
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_VIDEO_DEVICE">Device</div>
+                            <div class="content cell">
+                                <select class="device" id="flasherDevice"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell"></div>
+                            <div class="content cell">
+                                <div class="button small i18n" data-i18n_key="GUI_CFG_VIDEO_TEST" id="test_flasher_notification">&nbsp;Test&nbsp;</div>                                        
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>                
+            </div> <!-- video -->
+                                   
+            <div id="codecs" class="tabContent">                
+                <div class="table codecsColumnTable">
+	                <div class="row codecsColumnRow">
+		                <div class="cell codecsColumnCell">
+			                <fieldset>
+			                    <legend class="i18n" data-i18n_key="GUI_CFG_CODECS_AUDIOBOX_LABEL">Audio</legend>
+			                    <div id="audioCodecs" class="codecs table"></div>
+			                </fieldset>
+		                </div>
+		                
+		                <div class="cell codecsColumnCell">
+			                <fieldset>
+			                    <legend class="i18n" data-i18n_key="GUI_CFG_CODECS_VIDEOBOX_LABEL">Video</legend>
+			                    <div id="videoCodecs" class="codecs table"></div>
+			                </fieldset>
+			                <fieldset>
+			                    <legend class="i18n" data-i18n_key="GUI_CFG_CODECS_VIDEOFORMATBOX_LABEL">Video format</legend>
+			                    <div id="videoFormats" class="codecs table"></div>
+			                </fieldset>
+		                </div>
+		                
+		                <div class="cell codecsColumnCell">
+                            <fieldset id="enableH239">
+		                        <legend><span class="i18n" data-i18n_key="GUI_CFG_CODECS_H239BOX_LABEL">Content (H.239)</span> <input id="useH239" type="checkbox" /></legend>
+		                        <div><div id="h239VideoCodecs" class="codecs table"></div></div>
+		                        <div id="videoPercentageH239Row">
+		                            <div id="videoPercentageH239Label" class="cell i18n" data-i18n_key="GUI_CFG_H239_ADVANCED_BANDWIDTH_LABEL">Bandwidth</div>
+		                            <div id="videoPercentageH239SliderWrapper"  class="cell">
+		                                <input id="videoPercentageH239" type="range"  min="10" max="90" />
+		                                <div id="videoPercentageH239ValueDiv"><input id="videoPercentageH239Value" type="text" size="2" maxlength="2" />%</div>
+		                            </div>
+		                        </div>
+		                    </fieldset>
+		                    <fieldset id="enableH224">
+		                        <legend class="i18n" data-i18n_key="GUI_CFG_CODECS_DATABOX_LABEL">Misc</legend>
+		                        <div id="miscCodecs" class="codecs table">
+	                                <div class="row header">
+	                                    <div class="header label cell"></div>
+	                                    <div direction="enable" class="content header codecDirection cell i18n" data-i18n_key="GUI_CFG_CODECS_DATAENABLE_LABEL">enable</div>
+	                                </div>
+	                                <div class="row codec">
+	                                    <div codec="H224" class="label cell codec i18n" data-i18n_key="GUI_CFG_CODECS_USEH224_LABEL">H.224</div>
+	                                    <div class="content cell codec checkbox enable H224">
+	                                        <input id="useH224" type="checkbox" />
+	                                    </div>
+	                                </div>
+                                </div>
+		                    </fieldset>
+		                </div>
+	                </div>
+                </div>
+                
+                <div class="popupMask">
+                    <div class="popup" id="h239AdvancedPopup">
+                    </div>
+                </div>                
+            </div> <!-- codecs -->
+            
+            <div id="networkAndProtocols" class="tabContent">            
+                <fieldset id="networkFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_NETWORK_IP_SETTINGS_LABEL">Network</legend>
+                    <div class="table networkColumnTable">
+                    
+                        <div class="cell networkColumnCell">
+		                    <div class="networkAndProtocols table">                
+		                        <div class="row">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_TYPE_LABEL">Network type</div>
+		                            <div class="content cell">
+		                                <select class="device" id="networkTypes"></select>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_RX_KBPS_LABEL">Receive kbps</div>
+		                            <div class="content cell"><input type="text" id="rateDL" size="4" maxlength="4"/></div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_TX_KBPS_LABEL">Transmit kbps</div>
+		                            <div class="content cell"><input type="text" id="rateUL" size="4" maxlength="4"/></div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="label cell i18n i18nTitle" data-i18nTitle_key="GUI_CFG_NETWORK_AUTO_BW_CTRL_TOOLTIP" data-i18n_key="GUI_CFG_NETWORK_AUTO_BW_CTRL_LABEL">AIBC</div>
+		                            <div class="content cell"><input class="i18nTitle" data-i18nTitle_key="GUI_CFG_NETWORK_AUTO_BW_CTRL_TOOLTIP" type="checkbox" id="useAutoInBwControl"/></div>
+		                        </div>
+		                    </div>
+		                </div>
+		                
+		                <div class="cell networkColumnCell">
+		                    <div class="networkAndProtocols table"> 
+		                        <div class="row">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORKADV_LOCAL_IP_LABEL">Local IP address</div>
+		                            <div class="content cell"><select id="listOfLocalIp" class="ip"></select></div>
+		                        </div>
+		                        <div class="row" id="ipNatRow">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORKADV_NAT_IP_LABEL">NAT IP address</div>
+		                            <div class="content cell"><input type="text" id="ipNAT" class="ip"/></div>
+		                        </div>
+		                        <div class="row" id="rtpPortRangeRow">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORKADV_RTP_PORTRANGE_LABEL">RTP port range</div>
+		                            <div class="content cell"><input type="text" id="rtpPortLow" size="5" maxlength="5" class="port"/> - <input type="text" id="rtpPortHigh" size="5" maxlength="5" class="port"/></div>
+		                        </div>
+		                        <div class="row" id="callControlPortRangeRow">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORKADV_TCP_PORTRANGE_LABEL">TCP port range</div>
+		                            <div class="content cell"><input type="text" id="callControlPortLow" size="5" maxlength="5" class="port"/> - <input type="text" id="callControlPortHigh" size="5" maxlength="5" class="port"/></div>
+		                        </div>
+		                        <div class="row" id="diffservRow">
+		                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORKADV_QOS_DIFFSERV_LABEL">QoS Diffserv.</div>
+		                            <div class="content cell"><input type="text" id="diffserv" size="2" maxlength="2"/></div>
+		                        </div>                  
+		                    </div>
+                        </div>
+                    </div>                     
+                 </fieldset>
+                 
+                 <fieldset id="mediaEncryptionFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_MEDIA_ENCRYPTION_LABEL">Media encryption</legend>
+                    <div class="table">                
+                        <div class="row" id="mediaEncryptionRow">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_MEDIA_ENCRYPTION_POLICY_LABEL">Media encryption policy</div>
+                            <div class="content cell">
+                                <select  id="mediaEncryption">
+                                    <option value="DISABLED" class="i18n" data-i18n_key="GUI_CFG_MEDIA_ENCRYPTION_DISABLED">Disabled</option>
+                                    <option value="ENABLED" class="i18n" data-i18n_key="GUI_CFG_MEDIA_ENCRYPTION_ENABLED">Enabled</option>
+                                    <option value="REQUIRED" class="i18n" data-i18n_key="GUI_CFG_MEDIA_ENCRYPTION_REQUIRED">Required</option>
+                                </select>
+                                <input type="hidden" id="sip_mediaEncryption" />
+                                <input type="hidden" id="h323_mediaEncryption" />
+                            </div>
+                        </div>           
+                    </div>
+                </fieldset>  
+                
+                <fieldset id="protocolsFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_NETWORK_SELECT_PROTOCOL_LABEL">Protocols</legend>
+                    <div class="networkAndProtocols table">            
+                        <div class="row" id="useSIPRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_SIP_PROTOCOL_LABEL">SIP (RFC-3261)</div>
+                            <div class="content cell">
+                                <input type="checkbox" id="useSIP"/>
+                            </div>
+                        </div>
+                        <div class="row" id="useH323Row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_H323_PROTOCOL_LABEL">H.323 (ITU-U)</div>
+                            <div class="content cell">
+                                <input type="checkbox" id="useH323"/>
+                            </div>
+                        </div>
+                        <div class="row" id="useRTSPRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_NETWORK_RTSP_PROTOCOL_LABEL">RTSP (RFC-2326)</div>
+                            <div class="content cell">
+                                <input type="checkbox" id="useRTSP"/>
+                            </div>
+                        </div>            
+                    </div>
+                </fieldset>                
+            </div> <!-- networkAndProtocols -->
+            
+            <div id="sip" class="tabContent">    
+                <fieldset id="sipSettingsFieldset">
+                    <div class="sip table">                
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_SIP_USER_LABEL">SIP user</div>
+                            <div class="content cell"><input type="text" id="sip_alias" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_SIP_LOCAL_PORT_LABEL">Local port</div>
+                            <div class="content cell"><input type="text" id="sip_localport" class="port"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_SIP_DISPLAY_NAME_LABEL">Display name</div>
+                            <div class="content cell"><input type="text" id="sip_displayName" class="wide"/></div>
+                        </div> 
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_SIP_LOCAL_URI_LABEL">Local SIP URI</div>
+                            <div class="content cell"><input type="text" id="local_sip_uri" class="wide" readonly="readonly" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell"></div>
+                            <div class="content cell">
+                                <div class="button small i18n" data-i18n_key="GUI_CFG_SIP_ADVANCED_BUTTON" id="open_sip_advanced_settings">Open advanced settings</div>
+                            </div>
+                        </div>         
+                    </div>
+                </fieldset>   
+                
+                <fieldset id="sipRegistrarFieldset">
+                    <legend><span class="i18n" data-i18n_key="GUI_CFG_SIP_USE_REGISTRAR_LABEL">Registrar</span> <input id="sip_useRegistrar" type="checkbox" /></legend>
+                    <div class="sip registrar table">
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIP_REGISTRAR_NAME_LABEL">Registrar</div>
+                            <div class="content cell"><input type="text" id="sip_registrar" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIP_REGISTRAR_CUSTOM_PORT_LABEL">Custom port</div>
+                            <div class="content cell">
+                                <input type="text" id="sip_customportRegistrar" size="5" maxlength="5"/>
+                                <span class="control checkbox"><input type="checkbox" id="sip_registrar_useTLS"/>&nbsp;<span class="label i18n" data-i18n_key="GUI_CFG_SIP_TRANSPORT_TLS_LABEL" id="sip_registrar_useTLS_label">TLS</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>  
+                
+                <fieldset id="sipOutboundProxyFieldset">
+                    <legend><span class="i18n" data-i18n_key="GUI_CFG_SIP_USE_OUTBOUND_PROXY_LABEL">Outbound proxy</span> <input id="sip_useOutboundProxy" type="checkbox" /></legend>
+                    <div class="sip registrar table">
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIP_PROXY_ADDRESS_LABEL">Proxy</div>
+                            <div class="content cell"><input type="text" id="sip_outboundProxy" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIP_PROXY_CUSTOM_PORT_LABEL">Custom port</div>
+                            <div class="content cell">
+                                <input type="text" id="sip_customportProxy" size="5" maxlength="5"/>
+                                <span class="control checkbox"><input type="checkbox" id="sip_outboundProxy_useTLS"/>&nbsp;<span class="label i18n" data-i18n_key="GUI_CFG_SIP_TRANSPORT_TLS_LABEL" id="sip_outboundProxy_useTLS_label">TLS</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div> <!-- sip -->
+            
+            <div id="h323" class="tabContent">   
+                <fieldset id="h323SettingsFieldset">
+                    <div class="h323 table">                
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_H323_NAME_LABEL">H.323 name</div>
+                            <div class="content cell"><input type="text" id="h323Name" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_H323_PHONE_NUMBER_LABEL">Phone number</div>
+                            <div class="content cell"><input type="text" id="e164" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_H323_LOCAL_URI_LABEL">Local H323 URI</div>
+                            <div class="content cell"><input type="text" id="local_h323_uri" class="wide" readonly="readonly" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell"></div>
+                            <div class="content cell">
+                                <div class="button small i18n" data-i18n_key="GUI_CFG_H323_ADVANCED_BUTTON" id="open_h323_advanced_settings">Open advanced settings</div>
+                            </div>
+                        </div>           
+                    </div>
+                </fieldset>
+                
+                <fieldset id="h323GatekeeperFieldset">
+                    <legend><span class="i18n" data-i18n_key="GUI_CFG_H323_USE_GATEKEEPER_LABEL">Gatekeeper</span> <input id="useGatekeeper" type="checkbox" /></legend>
+                    <div class="h323 gatekeeper table">
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_H323_GATEKEEPER_AUTODISCOVERY_LABEL">Autodiscovery</div>
+                            <div class="content cell"><input type="checkbox" id="gatekeeperAutodiscovery"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_H323_GATEKEEPER_NAME_LABEL">Gatekeeper</div>
+                            <div class="content cell"><input type="text" id="gatekeeper"/></div>
+                        </div>
+                    </div>
+                </fieldset>  
+                
+                <fieldset id="h323GatewayFieldset">
+                    <legend><span class="i18n" data-i18n_key="GUI_CFG_H323_USE_GATEWAY_LABEL">Gateway</span> <input id="useGateway" type="checkbox" /></legend>
+                    <div class="h323 gateway table">
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_H323_GATEWAY_NAME_LABEL">Gateway</div>
+                            <div class="content cell"><input type="text" id="gateway"/></div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div> <!-- h323 -->
+            
+            <div id="general" class="tabContent">            
+                <fieldset>
+                    <legend>System</legend>
+                    <div class="table">                
+                        <div class="row" id="autostartRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_AUTOSTART_LABEL">Start at login</div>
+                            <div class="content cell"><input type="checkbox" id="autostart"/></div>
+                        </div>
+                        <div class="row" id="disableScreensaverRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_DISABLESCREENSAVER_LABEL">Disable screen saver</div>
+                            <div class="content cell"><input type="checkbox" id="disableScreensaver" /></div>
+                        </div>
+                        <div class="row" id="autoanswerRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_AUTOANSWER_LABEL">Auto answer</div>
+                            <div class="content cell"><input type="checkbox" id="autoanswer" /></div>
+                        </div>
+                        <div class="row" id="autoAcceptCallTransferRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_AUTOTRANSFER_LABEL">Auto accept call transfer/redirect</div>
+                            <div class="content cell"><input type="checkbox" id="autoAcceptCallTransfer" /></div>
+                        </div>
+                        <div class="row" id="disableAutoUpdateRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_DISABLE_AUTOUPDATE_LABEL">Disable auto update</div>
+                            <div class="content cell"><input type="checkbox" id="disableAutoUpdate" /></div>
+                        </div>
+                        <div class="row" id="languageRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_LANGUAGE_LABEL">Set program language to</div>
+                            <div class="content cell">
+                                <select  id="language">
+                                </select>
+                            </div>
+                        </div> 
+                        <div class="row" id="idleRow">
+                            <div class="label cell i18n" data-i18n_key="GUI_CFG_GENERAL_IDLE">Notify idle</div>
+                            <div class="content cell">
+                                <input type="checkbox" id="idleEnabled" />
+                                <span id="idleTimeoutConfiguration" class="hidden">
+                                    <span class="i18n" data-i18n_key="GUI_CFG_GENERAL_IDLE_AFTER">after</span> <input type="text" id="idleTimeout" size="2" maxlength="2" value="10" /> <span class="i18n" data-i18n_key="GUI_CFG_GENERAL_IDLE_MINUTES">minute(s)</span>
+                                </span>
+                            </div>
+                        </div>     
+                    </div>               
+                </fieldset>
+            </div> <!-- general -->
+            
+            <div id="about" class="tabContent">            
+                <fieldset id="aboutProductFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_ABOUT_PRODUCT">Product</legend>
+                    <div class="about controlDescription loading"></div>
+                    <div id="aboutLogo" class="about logo"><img src="./img/logo_about.png" /></div>
+                </fieldset>
+                
+                <fieldset id="aboutLicenseFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_ABOUT_LICENSE">License</legend>
+                    <div class="about controlDescription loading"></div>
+                </fieldset>
+                
+                <fieldset id="aboutCopyrightFieldset">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_ABOUT_COPYRIGHT">Copyright</legend>
+                    <div class="about controlDescription">
+                      <p class="first">Mirial ClearSea Client<br />Copyright &copy; 2001-2011 Mirial. All rights reserved.</p>                      
+                      <p>Mirial&reg; and the Mirial logo are registered trademarks of Mirial s.r.l.</p>                     
+                      <p class="last">All other product and company names are the trademarks or registered trademarks of their respective owners.</p>
+                      <p><span id="additionalCopyrightsNotices" class="i18n" data-i18n_key="GUI_CFG_ABOUT_ADDITIONAL_COPYRIGHTS">Additional copyrights notices</span></p>
+                    </div>
+                </fieldset>
+            </div> <!-- about -->
+            
+        </div>
+        
+        <div id="footer">
+            <div id="contentBottom">
+                <div id="audioBottom" class="tabContentBottom"></div>
+                <div id="videoBottom" class="tabContentBottom"></div>
+                <div id="codecsBottom" class="tabContentBottom"></div>
+                <div id="networkAndProtocolsBottom" class="tabContentBottom"></div>
+                <div id="sipBottom" class="tabContentBottom"></div>
+                <div id="h323Bottom" class="tabContentBottom"></div>
+                <div id="generalBottom" class="tabContentBottom"></div>
+                <div id="aboutBottom" class="tabContentBottom"></div>
+            </div>
+            <div class="buttonBar">
+                <div class="buttonContainer hidden" id="normal">
+                    <div class="button green i18n" data-i18n_key="COMMON_OK" id="ok">OK</div>
+                    <div class="button i18n" data-i18n_key="COMMON_APPLY" id="apply">Apply</div>
+                    <div class="button i18n" data-i18n_key="COMMON_CANCEL" id="cancel">Cancel</div>
+                </div>
+                <div class="buttonContainer hidden" id="wizard">
+	                <div class="button i18n" data-i18n_key="GUI_WIZARD_PREV" id="prev">&laquo; Prev</div>
+	                <div class="button i18n" data-i18n_key="GUI_WIZARD_NEXT" id="next">Next &raquo; </div>
+	                <div class="button green i18n" data-i18n_key="GUI_WIZARD_DONE" id="finish">Finish</div>
+	           </div>
+            </div>
+        </div>        
+        <div class="popupMask">
+            <div class="popup" id="errorPopup">
+                <div class="popupCloseHandler close handler"></div>
+                <div class="popupTitle"></div>
+                <div class="popupMessage"></div>
+                <div class="centerWrapper">
+                    <div class="button close handler i18n" data-i18n_key="COMMON_OK"></div>
+                </div>                    
+            </div>
+        </div>
+        
+        <div class="popupMask">
+            <div class="popup" id="warningPopup">
+                <div class="popupCloseHandler close handler"></div>
+                <div class="popupTitle"></div>
+                <div class="popupMessage"></div>
+                <div class="centerWrapper">
+                    <div class="button close handler i18n" data-i18n_key="COMMON_OK"></div>
+                </div>                    
+            </div>
+        </div>
+        
+        <div class="popupMask">
+            <div class="popup" id="infoPopup">
+                <div class="popupCloseHandler close handler"></div>
+                <div class="popupTitle"></div>
+                <div class="popupMessage"></div>
+                <div class="centerWrapper">
+                    <div class="button close handler i18n" data-i18n_key="COMMON_OK"></div>
+                </div>                    
+            </div>
+        </div>
+        
+        <div class="popupMask">
+            <div class="popup" id="sipAdvancedPopup">
+                <div class="popupCloseHandler close handler"></div>
+                <div class="popupTitle"></div>
+                <div class="popupMessage">
+
+                <fieldset id="">
+                    <div class="sip advanced table">
+                        <div class="row i18nTitle" data-i18nTitle_key="GUI_CFG_SIP_RFC3581_UAC_TOOLTIP">
+                            <div class="label cell"><div class="control checkbox"><input type="checkbox" id="sip_enable_RFC3581_UAC"/><div class="label i18n" data-i18n_key="GUI_CFG_SIP_RFC3581_UAC_LABEL">RFC-3581 UAC</div></div></div>
+                            <div class="content cell"></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIPADV_CALL_TIMEOUT_LABEL">Call establishment timeout (sec.)</div>
+                            <div class="content cell"><input type="text" id="sip_callEstabTimeout" size="3" maxlength="3"/></div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset id="">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_SIPADV_TRANSPORT_BOX_LABEL">Transport</legend>
+                    <div class="sip advanced transport table">
+                        <div class="row">
+                            <div class="label cell"><div class="control checkbox"><input type="checkbox" id="sip_useUDP"/><div class="label i18n" data-i18n_key="GUI_CFG_SIP_TRANSPORT_UDP_LABEL">UDP</div></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell"><div class="control checkbox"><input type="checkbox" id="sip_useTCP"/><div class="label i18n" data-i18n_key="GUI_CFG_SIP_TRANSPORT_TCP_LABEL">TCP</div></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell"><div class="control checkbox"><input type="checkbox" id="sip_useTLS"/><div class="label i18n" data-i18n_key="GUI_CFG_SIP_TRANSPORT_TLS_LABEL">TLS</div></div></div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset id="">
+                    <legend class="i18n" data-i18n_key="GUI_CFG_SIPADV_AUTH_BOX_LABEL">Authentication</legend>
+                    <div class="sip advanced authentication table">
+                        <div class="row">                                      
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIPADV_USERNAME_LABEL">Username</div>
+                            <div class="content cell"><input type="text" id="sip_authUsername" class="wide"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_SIPADV_PASSWORD_LABEL">Password</div>
+                            <div class="content cell"><input type="password" id="sip_authPassword" class="wide"/></div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                </div>
+                <div class="centerWrapper">
+                    <div class="button green close handler i18n" data-i18n_key="COMMON_OK"></div>
+                </div>                    
+            </div>
+        </div> <!-- sip advanced popup -->
+        
+        <div class="popupMask">
+            <div class="popup" id="h323AdvancedPopup">
+                <div class="popupCloseHandler close handler"></div>
+                <div class="popupTitle"></div>
+                <div class="popupMessage">
+                    <fieldset>
+                        <div class="h323 advanced table">
+                            <div class="row">
+                                <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_H323_DISABLE_EARLY_H245_LABEL">Disable early H.245</div>
+                                <div class="content cell"><input type="checkbox" id="disableEarlyH245"/></div>
+                            </div>
+                            <div class="row">
+                                <div class="label cell bottom i18n" data-i18n_key="GUI_CFG_H323_ENABLE_H245_TUNNELING_LABEL">H.245 tunneling</div>
+                                <div class="content cell">
+                                    <select  id="tunnelingModeH245">
+                                        <option value="REFUSE" class="i18n" data-i18n_key="GUI_CFG_H323_H245_TUNNELING_DISABLE">Disabled</option>
+                                        <option value="ACCEPT" class="i18n" data-i18n_key="GUI_CFG_H323_H245_TUNNELING_ACCEPT">Accept</option>
+                                        <option value="ACCEPT_AND_PROPOSE" class="i18n" data-i18n_key="GUI_CFG_H323_H245_TUNNELING_ACCEPT_PROPOSE">Accept &amp; Propose</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>                
+                </div>
+                <div class="centerWrapper">
+                    <div class="button green close handler i18n" data-i18n_key="COMMON_OK"></div>
+                </div>                    
+            </div>
+        </div> <!-- h323 advanced popup -->
+        
+    </body>
+</html>
